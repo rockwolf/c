@@ -4,29 +4,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+//#include <stdbool.h>
+#include <ncurses.h>
 
-extern char* argv0;
+char *current_time(char *fmt, char *buf);
 
-static void
-usage(void)
+static void usage(void)
 {
     printf("usage: %s [timezone strings] [-d format] [+FORMAT]\n", "mona");//argv0);
-    exit(1);
+    exit(EXIT_SUCCESS);
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-    double interval = 3.0;
-    int i;
-    // Time info
-    char buf[BUFSIZ];
     char *fmt = "%Y-%m-%d %H:%M:%S %Z";
-    struct tm *now = NULL;
-    struct tm *(*tztime)(const time_t *) = localtime;
-    const char *tz = "local";
-    time_t t;
-    //i /Time info
-
+    char buf[BUFSIZ]; //BUFSIZ declared in <stdio.h>
+    
+    /* option parsing */
     if(argc == 0)
     {
         usage();
@@ -35,21 +29,37 @@ int main(int argc, char* argv[])
     {
         fmt = &argv[0][1];
     }
-    t = time(NULL); 
-    printf("Time\n");
-    printf("-----------------------\n");
+
+    /* Init ncurses */
+    initscr();
+    cbreak();
+    noecho();
+    keypad(stdscr, TRUE);
+    timeout(0); //non-blocking getch()
+    curs_set(0); //hide cursor
+
+    /* time */
+    do
+    {
+        clear();
+        printw("\n");
+        printw(current_time(fmt, buf));
+        refresh();
+    } while(getch() != 'q');
+    endwin();
+    return EXIT_SUCCESS;
+}
+
+char *current_time(char *fmt, char *buf)
+{
+    struct tm *now = NULL;
+    struct tm *(*tztime)(const time_t *) = localtime;
+    const char *tz = "local";
+    time_t t;
+    
     t = time(NULL);
     if(!(now = tztime(&t)))
         printf("%stime failed\n", tz);
-
-    strftime(buf, sizeof buf, fmt, now);
-    puts(buf);
-
-    /*for(i=0;i<10;i++)
-    {
-        sleep(interval);
-        printf("test: %d\n", i);
-    }
-    */
-    return EXIT_SUCCESS;
+    strftime(buf, BUFSIZ, fmt, now);
+    return buf;
 }
