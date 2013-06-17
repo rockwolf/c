@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+#include <string.h>
 //#include <ncurses.h>
 
 char *current_time(char *fmt, char *buf);
-unsigned int getlinenum(int n, char *str[]);
+unsigned int getlinenum(int n, char *str[], size_t size);
 
 char            head1[] = {"\n------- \""};
 char            head2[] = {" -------\n"};
@@ -27,11 +28,23 @@ static void usage(void)
  * Get the number of lines to display at the "tail" of each file from
  *  the command line.
  */
-unsigned int getlinenum(int n, char *str[])
+unsigned int getlinenum(int n, char *str[], size_t size)
 {
+    int i;
+    char parm_n[20]="";
+
     if(n == 0)
         return 0;
-    printf("test: %d", (unsigned int)(str[1][3]));
+
+    printf("test: size = %d", (int)size);
+    for(i=3;i<(int)size;i++)
+    {
+       // start from 3: -n=543 => 5 = index 3 
+       parm_n[i] = str[1][i];
+    }
+    printf("------>%s<--", parm_n);
+    printf("test: %c", (char)(str[1][3]));
+    printf("test: %d", (int)(str[1][3]));
     return (unsigned int)(str[1][3]); //ATTENTION: only works for 1 char this way. Need to get argv[1][3 till end]!
 }
 
@@ -116,9 +129,8 @@ int main(int argc, char *argv[])
         if (argv[1][0] == '-')
         {
             if (argv[1][1] == 'n')
-                linenum = getlinenum(argc, argv);
+                linenum = getlinenum(argc, argv, sizeof(argv)/sizeof(argv[1]));
         }
-        //getlinenum(argc, argv);
     }
 
     for (filenum = 2; filenum < argc; ++filenum)
