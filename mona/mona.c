@@ -1,13 +1,15 @@
 /* See LICENSE file for license and copyright details. */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+//#include <string.h>
 //#include <stdbool.h>
 #include <ncurses.h>
 
 char *current_time(char *fmt, char *buf);
+char *afgets(char **, size_t *, FILE *);
+static void taketail(FILE *, const char *, long);
 
 static void usage(void)
 {
@@ -62,4 +64,37 @@ char *current_time(char *fmt, char *buf)
         printf("%stime failed\n", tz);
     strftime(buf, BUFSIZ, fmt, now);
     return buf;
+}
+
+void taketail(FILE *fp, const char *str, long n)
+{
+    char **ring;
+    long i, j;
+    size_t *size = NULL;
+                
+    if(!(ring = calloc(n, sizeof *ring)) || !(size = calloc(n, sizeof *size)))
+        printf("calloc:");
+    for(i = j = 0; afgets(&ring[i], &size[i], fp); i = j = (i+1)%n)
+        ;
+    if(ferror(fp))
+        eprintf("%s: read error:", str);
+                            
+    do
+    {
+        if(ring[j])
+        {
+            fputs(ring[j], stdout);
+            free(ring[j]);
+        }
+   } while((j = (j+1)%n) != i);
+   free(ring);
+   free(size);
+}
+
+void last_logs()
+{
+    if(!(fp = fopen("/var/log/messages.log", "r")))
+        printf(Error, "fopen %s.", "/var/log/messages.log");
+    read_file();
+    fclose(fp);
 }
