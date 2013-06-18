@@ -33,7 +33,7 @@ unsigned int getlinenum(int n, char *str[])
 
     if(n == 0)
         return 0;
-    //TODO: security problem: when param > 64: return 0 + print error
+
     sscanf(str[1], "-n=%63[^@]", parm_n);
     result = atoi(parm_n);
     return (unsigned int)result;
@@ -96,6 +96,7 @@ int main(int argc, char *argv[])
     char buf[BUFSIZ]; //BUFSIZ declared in <stdio.h>
     //FILE *fp;
     unsigned int linenum;
+    int lines, last;
     
     /* option parsing */
     if(argc == 1)
@@ -130,8 +131,11 @@ int main(int argc, char *argv[])
             fputs(" \"", stderr);
             fputs(argv[filenum], stderr);
             fputs("\" ", stderr);
-            printf("%d", (int)gettail(linenum)); //gets tail + returns lines in file
+            lines = (int)gettail(linenum); //gets the tail
+            printf("%d", lines);
+            last = lines >= (int)linenum ? (int)linenum : lines;
             fputs(" lines", stderr);
+            printf(", last %d lines shown", last);
             fputs(head2, stderr);
             for (cc = getc(fp); cc != EOF; cc = getc(fp))
             {
