@@ -4,18 +4,16 @@
 #include <unistd.h>
 #include <time.h>
 #include <string.h>
-//#include <ncurses.h>
 
 char *current_time(char *fmt, char *buf);
-unsigned int getlinenum(int n, char *str[], size_t size);
+unsigned int getlinenum(int n, char *str[]);
+long unsigned int gettail(unsigned int linenum);
 
-char            head1[] = {"\n------- \""};
+char            head1[] = {"\n------- "};
 char            head2[] = {" -------\n"};
 FILE *          fp;
 int             filenum;
 int             cc;
-//unsigned int    linenum = 20;
-unsigned int    indx; //index = built-in function
 long int *      tail;
 
 static void usage(void)
@@ -28,94 +26,74 @@ static void usage(void)
  * Get the number of lines to display at the "tail" of each file from
  *  the command line.
  */
-unsigned int getlinenum(int n, char *str[], size_t size)
+unsigned int getlinenum(int n, char *str[])
 {
-    int i;
-    char parm_n[20]="";
+    unsigned int result;
+    char parm_n[64]="";
 
     if(n == 0)
         return 0;
-
-    printf("test: size = %d", (int)size);
-    for(i=3;i<(int)size;i++)
-    {
-       // start from 3: -n=543 => 5 = index 3 
-       parm_n[i] = str[1][i];
-    }
-    printf("------>%s<--", parm_n);
-    printf("test: %c", (char)(str[1][3]));
-    printf("test: %d", (int)(str[1][3]));
-    return (unsigned int)(str[1][3]); //ATTENTION: only works for 1 char this way. Need to get argv[1][3 till end]!
+    //TODO: security problem: when param > 64: return 0 + print error
+    sscanf(str[1], "-n=%63[^@]", parm_n);
+    result = atoi(parm_n);
+    return (unsigned int)result;
 }
 
 /*
-**  Set the file pointer "fp" to "linenum - 1" lines before the end of
-**  the file.
-*/
-void gettail(unsigned int linenum)
+ * Get pointers to position in file, for tail <n>
+ * and return the total number of lines in the file.
+ */
+long unsigned int gettail(unsigned int linenum)
 {
-      char outstr[15];
-      unsigned long int currline = 0L;
+    unsigned int indx; //index = built-in function
+    unsigned long int currline = 0L;
+    tail = (long int *)malloc(sizeof(*tail) * linenum);
+    if (!tail)
+    {
+        fputs("Insufficient memory.", stderr);
+        exit(1);
+    }
+    tail[0] = ftell(fp);
+    indx = 0;
 
-      tail = (long int *)malloc(sizeof(*tail) * linenum);
-      if (!tail)
-      {
-            fputs("Insufficient memory.", stderr);
-            exit(1);
-      }
-      tail[0] = ftell(fp);
-      indx = 0;
-
-      for (cc = getc(fp); cc != EOF; cc = getc(fp))
-      {
-            if (cc == '\r')
-            {
-                  ++currline;
-                  cc = getc(fp);
-                  if (cc != '\n')
-                        ungetc(cc, fp);
-                  ++indx;
-                  indx %= linenum;
-                  tail[indx] = ftell(fp);
-            }
-            else
-            {
-                  if (cc == '\n')
-                  {
-                        ++currline;
-                        cc = getc(fp);
-                        if (cc != '\r')
-                              ungetc(cc, fp);
-                        ++indx;
-                        indx %= linenum;
-                        tail[indx] = ftell(fp);
-                  }
-            }
-      }
-      fputs("\" ", stderr);
-      snprintf(outstr, sizeof(currline), "%lu", currline);
-      fputs(outstr, stderr);
-      fputs(" lines", stderr);
-      if (currline >= linenum - 1)
-      {
+    for (cc=getc(fp);cc!=EOF;cc=getc(fp))
+    {
+        if (cc == '\r')
+        {
+            currline++;
+            cc = getc(fp);
+            if (cc != '\n')
+                ungetc(cc, fp);
             indx++;
-            indx %= linenum;
-      }
-      else  indx = 0;
-
-      if (fseek(fp, tail[indx], 0) == -1)
-      {
-            fputs("\nFile seek error.", stderr);
-            exit(1);
-      }
-      free(tail);
+            tail[indx] = ftell(fp);
+        }
+        else
+        {
+            if (cc == '\n')
+            {
+                currline++;
+                cc = getc(fp);
+                if (cc != '\r')
+                    ungetc(cc, fp);
+                indx++;
+                tail[indx] = ftell(fp);
+            }
+        }
+    }
+    indx=currline - linenum;
+    if (fseek(fp, tail[indx], 0) == -1)
+    {
+        fputs("\nFile seek error.", stderr);
+        exit(1);
+    }
+    free(tail);
+    return currline;
 }
 
 int main(int argc, char *argv[])
 {
-    /*char *fmt = "%Y-%m-%d %H:%M:%S %Z";
+    char *fmt = "%Y-%m-%d %H:%M:%S %Z";
     char buf[BUFSIZ]; //BUFSIZ declared in <stdio.h>
-    */
     //FILE *fp;
     unsigned int linenum;
     
@@ -129,7 +107,7 @@ int main(int argc, char *argv[])
         if (argv[1][0] == '-')
         {
             if (argv[1][1] == 'n')
-                linenum = getlinenum(argc, argv, sizeof(argv)/sizeof(argv[1]));
+                linenum = getlinenum(argc, argv);
         }
     }
 
@@ -141,6 +119,7 @@ int main(int argc, char *argv[])
         if (!fp)
         {
             fputs(head1, stderr);
+            fputs(" \"", stderr);
             fputs(argv[filenum], stderr);
             fputs("\" not found.", stderr);
             fputs(head2, stderr);
@@ -148,24 +127,24 @@ int main(int argc, char *argv[])
         else
         {
             fputs(head1, stderr);
+            fputs(" \"", stderr);
             fputs(argv[filenum], stderr);
-            gettail(linenum);
+            fputs("\" ", stderr);
+            printf("%d", (int)gettail(linenum)); //gets tail + returns lines in file
+            fputs(" lines", stderr);
             fputs(head2, stderr);
             for (cc = getc(fp); cc != EOF; cc = getc(fp))
             {
                 fputc(cc, stdout);
             }
+            fputs(head1, stderr);
+            fputs(" \"", stderr);
+            printf(current_time(fmt, buf));
+            fputs("\" ", stderr);
+            fputs(head2, stderr);
             fclose(fp);
         }
     }
-    /* time */
-    /*do
-    {
-        system("cls")
-        printf("\n");
-        printf(current_time(fmt, buf));
-    } while(getch() != 'q');
-    */
     return EXIT_SUCCESS;
 }
 
