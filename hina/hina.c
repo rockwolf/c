@@ -6,7 +6,7 @@
 #include <string.h>
 
 char *current_time(char *fmt, char *buf);
-unsigned int getlinenum(int n, char *str[]);
+int getlinenum(int n, char *str[]);
 long unsigned int gettail(unsigned int linenum);
 
 char            head1[] = {"\n------- "};
@@ -26,17 +26,20 @@ static void usage(void)
  * Get the number of lines to display at the "tail" of each file from
  *  the command line.
  */
-unsigned int getlinenum(int n, char *str[])
+int getlinenum(int n, char *str[])
 {
-    unsigned int result;
-    char parm_n[64]="";
-
+    int result;
+    //char parm_n[64]="";
+    puts(str[1]);
+    printf("test: 4321");
     if(n == 0)
         return 0;
 
-    sscanf(str[1], "-n=%63[^@]", parm_n);
-    result = atoi(parm_n);
-    return (unsigned int)result;
+    //sscanf(str[1], "-n=%63[^@]", parm_n);
+    //result = atoi(parm_n);
+    printf("test: 4321");
+    result = 5;
+    return (int)result;
 }
 
 /*
@@ -47,6 +50,7 @@ long unsigned int gettail(unsigned int linenum)
 {
     unsigned int indx; //index = built-in function
     unsigned long int currline = 0L;
+    printf("test 123");
     tail = (long int *)malloc(sizeof(*tail) * linenum);
     if (!tail)
     {
@@ -95,7 +99,7 @@ int main(int argc, char *argv[])
     char *fmt = "%Y-%m-%d %H:%M:%S %Z";
     char buf[BUFSIZ]; //BUFSIZ declared in <stdio.h>
     //FILE *fp;
-    unsigned int linenum;
+    int linenum;
     int lines, last;
     
     /* option parsing */
@@ -109,6 +113,7 @@ int main(int argc, char *argv[])
         {
             if (argv[1][1] == 'n')
                 linenum = getlinenum(argc, argv);
+            printf("test: linenum =%d", linenum);
         }
     }
 
@@ -127,6 +132,7 @@ int main(int argc, char *argv[])
         }
         else
         {
+            printf("test123456");
             fputs(head1, stderr);
             fputs(" \"", stderr);
             fputs(argv[filenum], stderr);
