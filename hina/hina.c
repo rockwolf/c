@@ -4,17 +4,19 @@
 #include <unistd.h>
 #include <time.h>
 #include <string.h>
+#include <stdbool.h>
 
 char *current_time(char *fmt, char *buf);
 int getlinenum(int n, char *str[]);
 long unsigned int gettail(unsigned int linenum);
+bool unit_test();
 
 char            head1[] = {"\n------- "};
 char            head2[] = {" -------\n"};
-FILE *          fp;
+FILE            *fp;
 int             filenum;
 int             cc;
-long int *      tail;
+long int        *tail;
 
 static void usage(void)
 {
@@ -29,16 +31,12 @@ static void usage(void)
 int getlinenum(int n, char *str[])
 {
     int result;
-    //char parm_n[64]="";
-    puts(str[1]);
-    printf("test: 4321");
+    char parm_n[64]="";
     if(n == 0)
         return 0;
 
-    //sscanf(str[1], "-n=%63[^@]", parm_n);
-    //result = atoi(parm_n);
-    printf("test: 4321");
-    result = 5;
+    sscanf(str[1], "-n=%63[^@]", parm_n);
+    result = atoi(parm_n);
     return (int)result;
 }
 
@@ -101,7 +99,12 @@ int main(int argc, char *argv[])
     //FILE *fp;
     int linenum;
     int lines, last;
-    
+  
+    if(!strncmp(argv[1], "--test", 6))
+    {
+        exit(unit_test());
+    }
+
     /* option parsing */
     if(argc == 1)
     {
@@ -112,7 +115,11 @@ int main(int argc, char *argv[])
         if (argv[1][0] == '-')
         {
             if (argv[1][1] == 'n')
+            {
+                printf("just before getlinenum\n");
                 linenum = getlinenum(argc, argv);
+                printf("just after getlinenum\n");
+            }
             printf("test: linenum =%d", linenum);
         }
     }
@@ -170,4 +177,24 @@ char *current_time(char *fmt, char *buf)
         printf("%stime failed\n", tz);
     strftime(buf, BUFSIZ, fmt, now);
     return buf;
+}
+
+bool unit_test()
+{
+    bool passed = true;
+
+    //Test getlinenum
+    int linenum;
+    char *argv[2];
+    argv[1] = "-n=12";
+
+    linenum = getlinenum(1, argv);
+    if(linenum != 12)
+    {
+        printf("Test failed: getlinenum(1, \"-=8\")=%d", linenum);
+        passed = false;
+    }
+    if(passed)
+        printf("All tests passed.\n");
+    return passed;
 }
