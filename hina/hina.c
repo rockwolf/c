@@ -48,9 +48,7 @@ long unsigned int gettail(unsigned int linenum)
 {
     unsigned int indx; //index = built-in function
     unsigned long int currline = 0L;
-    printf("before malloc\n");
     tail = (long int *)malloc(sizeof(*tail) * linenum);
-    printf("after malloc\n");
     if (!tail)
     {
         fputs("Insufficient memory.", stderr);
@@ -59,7 +57,6 @@ long unsigned int gettail(unsigned int linenum)
     tail[0] = ftell(fp);
     indx = 0;
 
-    printf("before for loop\n");
     for (cc=getc(fp);cc!=EOF;cc=getc(fp))
     {
         if (cc == '\r')
@@ -84,17 +81,15 @@ long unsigned int gettail(unsigned int linenum)
             }
         }
     }
-    printf("after for loop\n");
-    indx=currline - linenum; //here is the error, indx for n=5 = -2??
-    printf("before fseek, indx=%d\n", indx);
+    indx=linenum - currline; //here is the error, indx for n=5 = -2??
+    //printf("before fseek, currline=%lu | (int)currline=%d | linenum=%d | indx=%d\n", currline, (int)currline, linenum, indx);
     if (fseek(fp, tail[indx], 0) == -1)
     {
         fputs("\nFile seek error.", stderr);
         exit(1);
     }
-    printf("after fseek\n");
+    //printf("after fseek, currline=%lu | (int)currline=%d | linenum=%d | indx=%d\n", currline, (int)currline, linenum, indx);
     free(tail);
-    printf("before return\n");
     return currline;
 }
 
@@ -122,11 +117,8 @@ int main(int argc, char *argv[])
         {
             if (argv[1][1] == 'n')
             {
-                printf("just before getlinenum\n");
                 linenum = getlinenum(argc, argv);
-                printf("just after getlinenum\n");
             }
-            printf("test: linenum =%d\n", linenum);
         }
     }
 
@@ -134,9 +126,7 @@ int main(int argc, char *argv[])
     {
         if (*argv[filenum] == '/')
             continue;
-        printf("before opening file\n");
         fp = fopen(argv[filenum], "rb");
-        printf("after opening file\n");
         if (!fp)
         {
             fputs(head1, stderr);
@@ -147,18 +137,15 @@ int main(int argc, char *argv[])
         }
         else
         {
-            printf("in else, before printing\n");
             fputs(head1, stderr);
             fputs(" \"", stderr);
             fputs(argv[filenum], stderr);
             fputs("\" ", stderr);
-            printf("before getting the tail\n");
             lines = (int)gettail(linenum); //gets the tail
-            printf("after getting the tail\n");
-            printf("%d", lines);
+            fprintf(stderr, "%d", lines);
             last = lines >= (int)linenum ? (int)linenum : lines;
             fputs(" lines", stderr);
-            printf(", last %d lines shown", last);
+            fprintf(stderr, ", last %d lines shown", last);
             fputs(head2, stderr);
             for (cc = getc(fp); cc != EOF; cc = getc(fp))
             {
