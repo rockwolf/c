@@ -45,9 +45,14 @@ int main(int argc, char *argv[])
     PQclear(result);
 
     result = PQexec(conn,
-        "SELECT market_id, code, name"
-        " FROM t_market"
-        " ORDER BY code"
+        "SELECT t.trade_id, t.long_flag, m.name, s.name,"
+        " coalesce(date_buy, date_sell) as date,"
+        " coalesce(price_buy, price_sell) as price,"
+        " coalesce(shares_buy, shares_sell) as shares"
+        " FROM t_trade t"
+        " inner join t_market m on t.market_id = m.market_id"
+        " inner join t_stock_name s on s.stock_name_id = t.stock_name_id"
+        " ORDER BY t.trade_id"
     );
     if ((!result) || (PQresultStatus(result) != PGRES_TUPLES_OK))
     {
@@ -56,7 +61,7 @@ int main(int argc, char *argv[])
         exit_nicely(conn);
     }
 
-    printf("%-40s%-20s%-20s\n", "id:", "code:", "name:");
+    printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n", "id", "long", "market", "stock_name", "date", "price", "shares");
     for(i=0;i<80;i++)
     {
         printf("-");
@@ -68,7 +73,7 @@ int main(int argc, char *argv[])
     for(i = 0; i < recordcount; i++)
     {
         sprintf(name, "%s", PQgetvalue(result, i, 0));
-        printf("%-40s%-20s%-20s\n", name, PQgetvalue(result, i, 1), PQgetvalue(result, i, 2));
+        printf("%-5s%-20s%-20s\n", name, PQgetvalue(result, i, 1), PQgetvalue(result, i, 2));
     }
 
     PQclear(result);
