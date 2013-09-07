@@ -13,7 +13,13 @@ int main(int argc, char *argv[])
     char *dbhost, *dbport, *dboptions, *dbtty;
     char *dbname;
     
-    char name[256];
+    char var_id[256];
+    char var_long[256];
+    char var_market[256];
+    char var_stock_name[256];
+    char var_date[256];
+    char var_price[256];
+    char var_shares[256];
 
     int i, recordcount;
 
@@ -61,7 +67,14 @@ int main(int argc, char *argv[])
         exit_nicely(conn);
     }
 
-    printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n", "id", "long", "market", "stock_name", "date", "price", "shares");
+    printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
+            "id",
+            "long",
+            "market",
+            "stock_name",
+            "date",
+            "price",
+            "shares");
     for(i=0;i<80;i++)
     {
         printf("-");
@@ -72,13 +85,41 @@ int main(int argc, char *argv[])
 
     for(i = 0; i < recordcount; i++)
     {
-        sprintf(name, "%s", PQgetvalue(result, i, 0));
-        printf("%-5s%-20s%-20s\n", name, PQgetvalue(result, i, 1), PQgetvalue(result, i, 2));
+        sprintf(var_id, "%s", PQgetvalue(result, i, 0));
+        sprintf(var_long, "%s", PQgetvalue(result, i, 1));
+        sprintf(var_market, "%s", PQgetvalue(result, i, 2));
+        sprintf(var_stock_name, "%s", PQgetvalue(result, i, 3));
+        sprintf(var_date, "%s", PQgetvalue(result, i, 4));
+        sprintf(var_price, "%s", PQgetvalue(result, i, 5));
+        sprintf(var_shares, "%s", PQgetvalue(result, i, 6));
+        printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
+                var_id,
+                var_long,
+                var_market,
+                var_stock_name,
+                var_date,
+                var_price,
+                var_shares);
     }
 
     PQclear(result);
 
     PQfinish(conn);
 
+    printf("id = %d\n", get_drawdown_id());
+
     return EXIT_SUCCESS;
+}
+
+int get_drawdown_id()
+{
+        printf("Enter trade_id to update (q to quit) [q]: ");
+        //scanf("%s", ...);
+        printf("\n");
+        return -1;
+}
+
+int update_drawdown()
+{
+    return 0;
 }
