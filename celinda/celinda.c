@@ -107,6 +107,7 @@ int main(int argc, char *argv[])
     PQfinish(conn);
 
     printf("id = %d\n", get_drawdown_id());
+    //update_drawdown(get_drawdown_id(), get_drawdown_value());
 
     return EXIT_SUCCESS;
 }
@@ -116,10 +117,29 @@ int get_drawdown_id()
         printf("Enter trade_id to update (q to quit) [q]: ");
         //scanf("%s", ...);
         printf("\n");
+        //TODO: get_drawdown_id_from_trade_id()
         return -1;
 }
 
-int update_drawdown()
+int get_drawdown_value()
 {
+    printf("Enter new value: ");
+    //scanf...
+    printf("\n");
+    return -1;
+}
+
+int update_drawdown(int drawdown_id, int new_value)
+{
+    //This ain't gonna work man...
+    result = PQexec(conn, "update t_set drawdown_current = %s", (char *)drawdown_id);
+
+    if ((!result) || (PQresultStatus(result) != PGRES_COMMAND_OK))
+    {
+        fprintf(stderr, "SET command failed\n");
+        PQclear(result);
+        exit_nicely(conn);
+    }
+    PQclear(result);
     return 0;
 }
