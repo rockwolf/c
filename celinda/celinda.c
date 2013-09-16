@@ -114,19 +114,22 @@ int main(int argc, char *argv[])
 
 int get_drawdown_id()
 {
-        printf("Enter trade_id to update (q to quit) [q]: ");
-        //scanf("%s", ...);
-        printf("\n");
-        //TODO: get_drawdown_id_from_trade_id()
-        return -1;
+    return get_input_int("Enter trade_id to update (q to quit) [q]: ");
 }
 
 int get_drawdown_value()
 {
-    printf("Enter new value: ");
-    //scanf...
+    return get_input_int("Enter new value: ");
+}
+
+int get_input_int(atext)
+{
+    char input[256] = "";
+    
+    printf(atext);
+    fgets(input, 256, stdin);
     printf("\n");
-    return -1;
+    return input == "" ? -1 : (int)input;
 }
 
 int update_drawdown(int drawdown_id, int new_value)
