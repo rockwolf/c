@@ -3,7 +3,7 @@
 #include <libpq-fe.h>
 
 void print_header();
-void exit_nicely(PGconn *conn);
+void exit_on_error(PGconn *conn);
 int get_drawdown_id();
 int get_drawdown_value();
 int get_input_int(char *atext);
@@ -20,22 +20,29 @@ static char *db_qry_sel1 =
     " coalesce(shares_buy, shares_sell) as shares"
     " FROM t_trade t"
     " inner join t_market m on t.market_id = m.market_id"
-    " inner join t_stock_name s on s.stock_name_id = t.stock_name_id"
+    " inner join t_commodity_name s on s.commodity_name_id = t.commodity_name_id"
     " ORDER BY t.trade_id";
 static char *msg_input1 = "Enter trade_id to update (q to quit) [q]: ";
 static char *msg_input2 = "Enter new value: ";
+static char *msg_hdr1 = "id";
+static char *msg_hdr2 = "long";
+static char *msg_hdr3 = "market_code";
+static char *msg_hdr4 = "commodity_name";
+static char *msg_hdr5 = "date";
+static char *msg_hdr6 = "price";
+static char *msg_hdr7 = "shares";
+static char *msg_hdr_line = "-";
 
-void exit_nicely(PGconn *conn)
+void exit_on_error(PGconn *conn)
 {
     PQfinish(conn);
-    exit(1);
+    exit(EXIT_FAILURE);
 }
 
 int main(int argc, char *argv[])
 {
     char *dbhost, *dbport, *dboptions, *dbtty;
     char *dbname;
-    
     char var_id[256];
     char var_long[256];
     char var_market[256];
@@ -43,12 +50,10 @@ int main(int argc, char *argv[])
     char var_date[256];
     char var_price[256];
     char var_shares[256];
-
     int i, recordcount;
-
     PGconn *conn;
     PGresult *result;
-
+    
     dbhost = "testdb";
     dbport = NULL;
     dboptions = NULL;
@@ -60,7 +65,7 @@ int main(int argc, char *argv[])
     {
         fprintf(stderr, db_err_conn1, dbname);
         fprintf(stderr, "%s", PQerrorMessage(conn));
-        exit_nicely(conn);
+        exit_on_error(conn);
     }
 
     result = PQexec(conn, db_qry_sel1);
@@ -68,34 +73,32 @@ int main(int argc, char *argv[])
     {
         fprintf(stderr, db_err_qry1);
         PQclear(result);
-        exit_nicely(conn);
+        exit_on_error(conn);
     }
 
     print_header();
 
     recordcount = PQntuples(result);
-
     for(i = 0; i < recordcount; i++)
     {
         sprintf(var_id, "%s", PQgetvalue(result, i, 0));
         sprintf(var_long, "%s", PQgetvalue(result, i, 1));
         sprintf(var_market, "%s", PQgetvalue(result, i, 2));
-        sprintf(var_stock_name, "%s", PQgetvalue(result, i, 3));
+        sprintf(var_commodity_name, "%s", PQgetvalue(result, i, 3));
         sprintf(var_date, "%s", PQgetvalue(result, i, 4));
         sprintf(var_price, "%s", PQgetvalue(result, i, 5));
         sprintf(var_shares, "%s", PQgetvalue(result, i, 6));
         printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
-                var_id,
-                var_long,
-                var_market,
-                var_stock_name,
-                var_date,
-                var_price,
-                var_shares);
+            var_id,
+            var_long,
+            var_market,
+            var_commodity_name,
+            var_date,
+            var_price,
+            var_shares);
     }
-
+    
     PQclear(result);
-
     PQfinish(conn);
 
     printf("id = %d\n", get_drawdown_id());
@@ -107,16 +110,16 @@ int main(int argc, char *argv[])
 void print_header()
 {
     printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
-            "id",
-            "long",
-            "market",
-            "stock_name",
-            "date",
-            "price",
-            "shares");
+            msg_hdr1,
+            msg_hdr2,
+            msg_hdr3,
+            msg_hdr4,
+            msg_hdr5,
+            msg_hdr6,
+            msg_hdr7);
     for(i=0;i<80;i++)
     {
-        printf("-");
+        printf(msg_hdr_line);
     }
     printf("\n");
 }
@@ -143,15 +146,16 @@ int get_input_int(char *atext)
 
 int update_drawdown(int drawdown_id, int new_value)
 {
+    PQresult db_result; //<- what should this be?
     //This ain't gonna work man...
-    result = PQexec(conn, db_qry_upd1, (char *)drawdown_id);
+    db_result = PQexec(conn, db_qry_upd1, (char *)drawdown_id);
 
-    if ((!result) || (PQresultStatus(result) != PGRES_COMMAND_OK))
+    if ((!db_result) || (PQresultStatus(db_result) != PGRES_COMMAND_OK))
     {
         fprintf(stderr, db_err_upd1);
-        PQclear(result);
-        exit_nicely(conn);
+        PQclear(db_result);
+        exit_on_error(conn);
     }
-    PQclear(result);
-    return 0;
+    PQclear(db_result);
+    return EXIT_SUCCESS;
 }
