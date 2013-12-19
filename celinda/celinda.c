@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <libpq-fe.h>
 
+static char *err_db_qry1 = "SELECT command did not return tuples properly\n";
+static char *err_db_upd1 = "Update command failed\n";
+static char *msg_input1 = "Enter trade_id to update (q to quit) [q]: ";
+static char *msg_input2 = "Enter new value: ";
+
 void exit_nicely(PGconn *conn)
 {
     PQfinish(conn);
@@ -40,16 +45,6 @@ int main(int argc, char *argv[])
         exit_nicely(conn);
     }
 
-    result = PQexec(conn, "SET DateStyle = 'European'");
-
-    if ((!result) || (PQresultStatus(result) != PGRES_COMMAND_OK))
-    {
-        fprintf(stderr, "SET command failed\n");
-        PQclear(result);
-        exit_nicely(conn);
-    }
-    PQclear(result);
-
     result = PQexec(conn,
         "SELECT t.trade_id, t.long_flag, m.name, s.name,"
         " coalesce(date_buy, date_sell) as date,"
@@ -62,7 +57,7 @@ int main(int argc, char *argv[])
     );
     if ((!result) || (PQresultStatus(result) != PGRES_TUPLES_OK))
     {
-        fprintf(stderr, "SELECT command did not return tuples properly\n");
+        fprintf(stderr, err_db_qry1);
         PQclear(result);
         exit_nicely(conn);
     }
@@ -114,12 +109,12 @@ int main(int argc, char *argv[])
 
 int get_drawdown_id()
 {
-    return get_input_int("Enter trade_id to update (q to quit) [q]: ");
+    return get_input_int(msg_input1);
 }
 
 int get_drawdown_value()
 {
-    return get_input_int("Enter new value: ");
+    return get_input_int(msg_input2);
 }
 
 int get_input_int(atext)
@@ -139,7 +134,7 @@ int update_drawdown(int drawdown_id, int new_value)
 
     if ((!result) || (PQresultStatus(result) != PGRES_COMMAND_OK))
     {
-        fprintf(stderr, "SET command failed\n");
+        fprintf(stderr, err_db_upd1);
         PQclear(result);
         exit_nicely(conn);
     }
