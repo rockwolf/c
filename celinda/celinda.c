@@ -2,8 +2,17 @@
 #include <stdio.h>
 #include <libpq-fe.h>
 
-static char *err_db_qry1 = "SELECT command did not return tuples properly\n";
-static char *err_db_upd1 = "Update command failed\n";
+void print_header();
+void exit_nicely(PGconn *conn);
+int get_drawdown_id();
+int get_drawdown_value();
+int get_input_int(char *atext);
+int update_drawdown(int drawdown_id, int new_value);
+
+static char *db_err_qry1 = "SELECT command did not return tuples properly\n";
+static char *db_err_upd1 = "Update command failed\n";
+static char *db_err_conn1 = "Connection to database \"%s\" failed.\n";
+static char *db_qry_upd1 = "update t_set drawdown_current = %s";
 static char *msg_input1 = "Enter trade_id to update (q to quit) [q]: ";
 static char *msg_input2 = "Enter new value: ";
 
@@ -40,7 +49,7 @@ int main(int argc, char *argv[])
     conn = PQsetdb(dbhost, dbport, dboptions, dbtty, dbname);
     if (PQstatus(conn) == CONNECTION_BAD)
     {
-        fprintf(stderr, "Connection to database \"%s\" failed.\n", dbname);
+        fprintf(stderr, db_err_conn1, dbname);
         fprintf(stderr, "%s", PQerrorMessage(conn));
         exit_nicely(conn);
     }
@@ -57,24 +66,12 @@ int main(int argc, char *argv[])
     );
     if ((!result) || (PQresultStatus(result) != PGRES_TUPLES_OK))
     {
-        fprintf(stderr, err_db_qry1);
+        fprintf(stderr, db_err_qry1);
         PQclear(result);
         exit_nicely(conn);
     }
 
-    printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
-            "id",
-            "long",
-            "market",
-            "stock_name",
-            "date",
-            "price",
-            "shares");
-    for(i=0;i<80;i++)
-    {
-        printf("-");
-    }
-    printf("\n");
+    print_header();
 
     recordcount = PQntuples(result);
 
@@ -107,6 +104,23 @@ int main(int argc, char *argv[])
     return EXIT_SUCCESS;
 }
 
+void print_header()
+{
+    printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
+            "id",
+            "long",
+            "market",
+            "stock_name",
+            "date",
+            "price",
+            "shares");
+    for(i=0;i<80;i++)
+    {
+        printf("-");
+    }
+    printf("\n");
+}
+
 int get_drawdown_id()
 {
     return get_input_int(msg_input1);
@@ -117,7 +131,7 @@ int get_drawdown_value()
     return get_input_int(msg_input2);
 }
 
-int get_input_int(atext)
+int get_input_int(char *atext)
 {
     char input[256] = "";
     
@@ -130,11 +144,11 @@ int get_input_int(atext)
 int update_drawdown(int drawdown_id, int new_value)
 {
     //This ain't gonna work man...
-    result = PQexec(conn, "update t_set drawdown_current = %s", (char *)drawdown_id);
+    result = PQexec(conn, db_qry_upd1, (char *)drawdown_id);
 
     if ((!result) || (PQresultStatus(result) != PGRES_COMMAND_OK))
     {
-        fprintf(stderr, err_db_upd1);
+        fprintf(stderr, db_err_upd1);
         PQclear(result);
         exit_nicely(conn);
     }
