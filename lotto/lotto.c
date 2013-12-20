@@ -8,7 +8,7 @@
 #include <time.h>
 
 int rand_lim(int limit);
-int number_is_taken(int n, int n_array[])
+int number_is_taken(int n, int n_array[]);
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     for(i = 0; i<NUM;)
     {
         int r = rand_lim(RAND_LIMIT);
-        if(number_is_taken(r, numbers) = 0)
+        if(number_is_taken(r, numbers) == 0)
         {
     	    numbers[i] = r;
     	    i++;
@@ -52,5 +52,5 @@ int number_is_taken(int n, int n_array[])
     {
     	result = (n_array[i] == n) ? 1 : 0; 
     }
-    return result
+    return result;
 }
