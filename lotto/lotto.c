@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
         int r = rand_lim(RAND_LIMIT);
         if(number_is_taken(r, numbers) == 0)
         {
-    	    numbers[i] = r;
-    	    i++;
+            numbers[i] = r;
+            i++;
         }
     }
     print_numbers(numbers);
