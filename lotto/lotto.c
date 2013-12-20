@@ -50,7 +50,9 @@ int number_is_taken(int n, int n_array[])
     int i, result;
     for (i=0; i<NUM; i++)
     {
-    	result = (n_array[i] == n) ? 1 : 0; 
+    	result = (n_array[i] == n) ? 1 : 0;
+    	if(result == 1)
+            break;
     }
     return result;
 }
