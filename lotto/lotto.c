@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 	int i;
 	
 	srand(time(NULL));
-	for(i = 0; i<MAX; i++)
+	for(i = 0; i<NUM; i++)
 	{
 		int r = rand_lim(RAND_LIMIT);
 		printf("%d ", r);
