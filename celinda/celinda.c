@@ -1,3 +1,5 @@
+/* See LICENSE.txt file for license info. */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <libpq-fe.h>
