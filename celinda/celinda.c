@@ -8,6 +8,7 @@ int input_drawdown_id();
 int input_drawdown_value();
 int get_input_int(char *atext);
 int update_drawdown(int drawdown_id, int new_value);
+void print_list_data(PGresult db_result);
 
 static char *db_err_qry1 = "SELECT command did not return tuples properly\n";
 static char *db_err_upd1 = "Update command failed\n";
@@ -41,18 +42,10 @@ void exit_on_error(PGconn *conn)
 
 int main(int argc, char *argv[])
 {
-    char *dbhost, *dbport, *dboptions, *dbtty;
-    char *dbname;
-    char var_id[256];
-    char var_long[256];
-    char var_market[256];
-    char var_stock_name[256];
-    char var_date[256];
-    char var_price[256];
-    char var_shares[256];
-    int i, recordcount;
-    PGconn *conn;
-    PGresult *result;
+    char *dbhost, *dbname, *dbport; 
+    char *dboptions, *dbtty;
+    PGconn *conn; 
+    PGresult *db_result;
     
     dbhost = "testdb";
     dbport = NULL;
@@ -68,37 +61,18 @@ int main(int argc, char *argv[])
         exit_on_error(conn);
     }
 
-    result = PQexec(conn, db_qry_sel1);
-    if ((!result) || (PQresultStatus(result) != PGRES_TUPLES_OK))
+    db_result = PQexec(conn, db_qry_sel1);
+    if ((!db_result) || (PQresultStatus(db_result) != PGRES_TUPLES_OK))
     {
         fprintf(stderr, db_err_qry1);
-        PQclear(result);
+        PQclear(db_result);
         exit_on_error(conn);
     }
 
     print_header();
-
-    recordcount = PQntuples(result);
-    for(i = 0; i < recordcount; i++)
-    {
-        sprintf(var_id, "%s", PQgetvalue(result, i, 0));
-        sprintf(var_long, "%s", PQgetvalue(result, i, 1));
-        sprintf(var_market, "%s", PQgetvalue(result, i, 2));
-        sprintf(var_commodity_name, "%s", PQgetvalue(result, i, 3));
-        sprintf(var_date, "%s", PQgetvalue(result, i, 4));
-        sprintf(var_price, "%s", PQgetvalue(result, i, 5));
-        sprintf(var_shares, "%s", PQgetvalue(result, i, 6));
-        printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
-            var_id,
-            var_long,
-            var_market,
-            var_commodity_name,
-            var_date,
-            var_price,
-            var_shares);
-    }
+    print_list_data(db_result);
     
-    PQclear(result);
+    PQclear(db_result);
     PQfinish(conn);
 
     printf("id = %d\n", input_drawdown_id());
@@ -124,6 +98,39 @@ void print_header()
     printf("\n");
 }
 
+void print_list_data(PGresult db_result)
+{
+    char var_id[256];
+    char var_long[256];
+    char var_market[256];
+    char var_stock_name[256];
+    char var_date[256];
+    char var_price[256];
+    char var_shares[256];
+    
+    int i, recordcount;
+    
+    recordcount = PQntuples(db_result);
+    for(i = 0; i < recordcount; i++)
+    {
+        sprintf(var_id, "%s", PQgetvalue(db_result, i, 0));
+        sprintf(var_long, "%s", PQgetvalue(db_result, i, 1));
+        sprintf(var_market, "%s", PQgetvalue(db_result, i, 2));
+        sprintf(var_commodity_name, "%s", PQgetvalue(db_result, i, 3));
+        sprintf(var_date, "%s", PQgetvalue(db_result, i, 4));
+        sprintf(var_price, "%s", PQgetvalue(db_result, i, 5));
+        sprintf(var_shares, "%s", PQgetvalue(db_result, i, 6));
+        printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
+            var_id,
+            var_long,
+            var_market,
+            var_commodity_name,
+            var_date,
+            var_price,
+            var_shares);
+    }
+}
+
 int input_drawdown_id()
 {
     return get_input_int(msg_input1);
@@ -146,7 +153,7 @@ int get_input_int(char *atext)
 
 int update_drawdown(int drawdown_id, int new_value)
 {
-    PQresult db_result; //<- what should this be?
+    PGresult db_result;
     //This ain't gonna work man...
     db_result = PQexec(conn, db_qry_upd1, (char *)drawdown_id);
 
