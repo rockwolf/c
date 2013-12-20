@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
     int i;
     int numbers[NUM] = {0};
 	
-    srand(time(NULL));
-    for(i = 0; i<NUM;)
+    srand(time(NULL)); //randomize the seed
+    for(i = 0; i < NUM;)
     {
         int r = rand_lim(RAND_LIMIT);
         if(number_is_taken(r, numbers) == 0)
@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
         }
     }
     print_numbers(numbers);
+    
     return EXIT_SUCCESS;
 }
 
@@ -34,26 +35,28 @@ int main(int argc, char *argv[])
 int rand_lim(int limit)
 {
     int divisor = RAND_MAX/(limit+1);
-    int retval;
+    int result;
 
     do
     { 
-        retval = rand() / divisor;
-    } while (retval > limit);
-
-    return retval;
+        result = rand() / divisor;
+    } while (result > limit);
+    
+    return result;
 }
 
 /* Checks if the chosen int is in the given int array. */
 int number_is_taken(int n, int n_array[])
 {
     int i, result;
-    for (i=0; i<NUM; i++)
+    
+    for (i = 0; i < NUM; i++)
     {
     	result = (n_array[i] == n) ? 1 : 0;
     	if(result == 1)
             break;
     }
+    
     return result;
 }
 
@@ -61,7 +64,8 @@ int number_is_taken(int n, int n_array[])
 void print_numbers(int numbers[])
 {
     int i;
-    for(i = 0; i<NUM; i++)
+    
+    for(i = 0; i < NUM; i++)
     {
         printf("%d ", numbers[i]);
     }
