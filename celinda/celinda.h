@@ -7,6 +7,7 @@ int input_drawdown_value();
 int get_input_int(char *atext);
 int update_drawdown(int drawdown_id, int new_value);
 void print_list_data(PGresult db_result);
+PGresult get_main_list(PGconn *conn);
 
 //static char *db_err_qry1 = "SELECT command did not return tuples properly\n";
 //static char *db_err_upd1 = "Update command failed\n";
