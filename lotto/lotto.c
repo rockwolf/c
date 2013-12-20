@@ -1,3 +1,4 @@
+/* See LICENSE.txt file for license info. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
