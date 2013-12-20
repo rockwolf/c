@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     
     dbhost = args.host ? args.host : def_host;
     dbport = args.port ? args.port : def_port;
-    dbname = args.database? args.database : def_database;
+    dbname = args.database ? args.database : def_database;
     dboptions = NULL;
     dbtty = NULL;
 
