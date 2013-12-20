@@ -1,12 +1,17 @@
 /* See LICENSE.txt file for license info. */
+
+#define NUM             6
+#define RAND_LIMIT     42
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
+int rand_lim(int limit);
+
+/* return a random number between 0 and limit inclusive. */
 int rand_lim(int limit)
 {
-	/* return a random number between 0 and limit inclusive. */
-
     int divisor = RAND_MAX/(limit+1);
     int retval;
 
@@ -18,14 +23,14 @@ int rand_lim(int limit)
     return retval+1;
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	int i;
 	
 	srand(time(NULL));
-	for(i = 0; i<6; i++)
+	for(i = 0; i<MAX; i++)
 	{
-		int r = rand_lim(42);
+		int r = rand_lim(RAND_LIMIT);
 		printf("%d ", r);
 	}
 	printf("\b");
