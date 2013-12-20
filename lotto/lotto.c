@@ -9,6 +9,7 @@
 
 int rand_lim(int limit);
 int number_is_taken(int n, int n_array[]);
+void print_numbers(int numbers[]);
 
 int main(int argc, char *argv[])
 {
@@ -24,9 +25,8 @@ int main(int argc, char *argv[])
     	    numbers[i] = r;
     	    i++;
         }
-        printf("%d ", r);
     }
-    printf("\b");
+    print_numbers(numbers);
     return EXIT_SUCCESS;
 }
 
@@ -41,7 +41,7 @@ int rand_lim(int limit)
         retval = rand() / divisor;
     } while (retval > limit);
 
-    return retval+1;
+    return retval;
 }
 
 /* Checks if the chosen int is in the given int array. */
@@ -55,4 +55,15 @@ int number_is_taken(int n, int n_array[])
             break;
     }
     return result;
+}
+
+/* Prints the numbers. */
+void print_numbers(int numbers[])
+{
+    int i;
+    for(i = 0; i<NUM; i++)
+    {
+        printf("%d ", numbers[i]);
+    }
+    printf("\b\n");
 }
