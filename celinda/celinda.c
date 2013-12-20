@@ -4,8 +4,8 @@
 
 void print_header();
 void exit_on_error(PGconn *conn);
-int get_drawdown_id();
-int get_drawdown_value();
+int input_drawdown_id();
+int input_drawdown_value();
 int get_input_int(char *atext);
 int update_drawdown(int drawdown_id, int new_value);
 
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
     PQclear(result);
     PQfinish(conn);
 
-    printf("id = %d\n", get_drawdown_id());
+    printf("id = %d\n", input_drawdown_id());
     //update_drawdown(get_drawdown_id(), get_drawdown_value());
 
     return EXIT_SUCCESS;
@@ -124,12 +124,12 @@ void print_header()
     printf("\n");
 }
 
-int get_drawdown_id()
+int input_drawdown_id()
 {
     return get_input_int(msg_input1);
 }
 
-int get_drawdown_value()
+int input_drawdown_value()
 {
     return get_input_int(msg_input2);
 }
