@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <libpq-fe.h>
 
+#include "docopt.c"
+
 void print_header();
 void exit_on_error(PGconn *conn);
 int input_drawdown_id();
@@ -33,6 +35,8 @@ static char *msg_hdr5 = "date";
 static char *msg_hdr6 = "price";
 static char *msg_hdr7 = "shares";
 static char *msg_hdr_line = "-";
+static char *def_host = "localhost";
+static char *def_database = "finance";
 
 void exit_on_error(PGconn *conn)
 {
@@ -47,11 +51,16 @@ int main(int argc, char *argv[])
     PGconn *conn; 
     PGresult *db_result;
     
-    dbhost = "testdb";
+    DocoptArgs args = docopt(argc, argv, /* help */ 1, /* version */ "1.00");
+    printf("--host == %s\n", args.host);
+    printf("--database == %s\n", args.database);
+    printf("--port == %s\n", args.port);
+    
+    dbhost = args.host ? args.host : def_host;
     dbport = NULL;
     dboptions = NULL;
     dbtty = NULL;
-    dbname = "finance";
+    dbname = args.database? args.database : def_database;
 
     conn = PQsetdb(dbhost, dbport, dboptions, dbtty, dbname);
     if (PQstatus(conn) == CONNECTION_BAD)
