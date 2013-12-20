@@ -7,11 +7,9 @@
 #include "celinda.h"
 #include "docopt.c"
 
-void exit_on_error(PGconn *conn)
-{
-    PQfinish(conn);
-    exit(EXIT_FAILURE);
-}
+#define MAX_INT               50
+#define MAX_COL              256
+#define HEADER_LENGTH         80
 
 int main(int argc, char *argv[])
 {
@@ -31,6 +29,7 @@ int main(int argc, char *argv[])
     dboptions = NULL;
     dbtty = NULL;
 
+    // Set the connection
     conn = PQsetdb(dbhost, dbport, dboptions, dbtty, dbname);
     if (PQstatus(conn) == CONNECTION_BAD)
     {
@@ -39,7 +38,36 @@ int main(int argc, char *argv[])
         exit_on_error(conn);
     }
 
-    db_result = PQexec(conn, db_qry_sel1);
+    // Get the main list
+    db_result = get_main_list(conn);
+
+    // Print the results
+    print_header();
+    print_list_data(db_result);
+    
+    PQclear(db_result);
+    PQfinish(conn);
+
+    // Enter new drawdown value for an id in the list
+    printf("id = %d\n", input_drawdown_id());
+    //update_drawdown(get_drawdown_id(), get_drawdown_value());
+
+    return EXIT_SUCCESS;
+}
+
+/* Finish Postgresql actions, to exit in a clean way. */
+void exit_on_error(PGconn *conn)
+{
+    PQfinish(conn);
+    exit(EXIT_FAILURE);
+}
+
+/* Get the main list. */
+PGresult get_main_list(PGconn *conn)
+{
+    PGresult *db_result;
+    
+    PQexec(conn, db_qry_sel1);
     if ((!db_result) || (PQresultStatus(db_result) != PGRES_TUPLES_OK))
     {
         //fprintf(stderr, db_err_qry1);
@@ -47,19 +75,10 @@ int main(int argc, char *argv[])
         PQclear(db_result);
         exit_on_error(conn);
     }
-
-    print_header();
-    print_list_data(db_result);
-    
-    PQclear(db_result);
-    PQfinish(conn);
-
-    printf("id = %d\n", input_drawdown_id());
-    //update_drawdown(get_drawdown_id(), get_drawdown_value());
-
-    return EXIT_SUCCESS;
+    return db_result;
 }
 
+/* Print output headers for main list. */
 void print_header()
 {
     printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
@@ -70,22 +89,23 @@ void print_header()
             msg_hdr5,
             msg_hdr6,
             msg_hdr7);
-    for(i=0;i<80;i++)
+    for(i=0;i<HEADER_LENGTH;i++)
     {
         printf(msg_hdr_line);
     }
     printf("\n");
 }
 
+/* Print data for main list. */
 void print_list_data(PGresult db_result)
 {
-    char var_id[256];
-    char var_long[256];
-    char var_market[256];
-    char var_stock_name[256];
-    char var_date[256];
-    char var_price[256];
-    char var_shares[256];
+    char var_id[MAX_COL];
+    char var_long[MAX_COL];
+    char var_market[MAX_COL];
+    char var_stock_name[MAX_COL];
+    char var_date[MAX_COL];
+    char var_price[MAX_COL];
+    char var_shares[MAX_COL];
     
     int i, recordcount;
     
@@ -110,22 +130,25 @@ void print_list_data(PGresult db_result)
     }
 }
 
+/* Ask for the drawdown id (found in the main list). */
 int input_drawdown_id()
 {
     return get_input_int(msg_input1);
 }
 
+/* Ask for a new drawdown value. */
 int input_drawdown_value()
 {
     return get_input_int(msg_input2);
 }
 
+/* Ask for an integer in a safe way. */
 int get_input_int(char *atext)
 {
-    char input[256] = "";
+    char input[MAX_INT] = "";
     
     printf(atext);
-    fgets(input, 256, stdin);
+    fgets(input, MAX_INT, stdin);
     printf("\n");
     return input == "" ? -1 : (int)input;
 }
