@@ -12,8 +12,8 @@ int get_input_int(char *atext);
 int update_drawdown(int drawdown_id, int new_value);
 void print_list_data(PGresult db_result);
 
-static char *db_err_qry1 = "SELECT command did not return tuples properly\n";
-static char *db_err_upd1 = "Update command failed\n";
+//static char *db_err_qry1 = "SELECT command did not return tuples properly\n";
+//static char *db_err_upd1 = "Update command failed\n";
 static char *db_err_conn1 = "Connection to database \"%s\" failed.\n";
 static char *db_qry_upd1 = "update t_set drawdown_current = %s";
 static char *db_qry_sel1 =
@@ -37,6 +37,7 @@ static char *msg_hdr7 = "shares";
 static char *msg_hdr_line = "-";
 static char *def_host = "localhost";
 static char *def_database = "finance";
+static char *def_port = "5432";
 
 void exit_on_error(PGconn *conn)
 {
@@ -57,10 +58,10 @@ int main(int argc, char *argv[])
     printf("--port == %s\n", args.port);
     
     dbhost = args.host ? args.host : def_host;
-    dbport = NULL;
+    dbport = args.port ? args.port : def_port;
+    dbname = args.database? args.database : def_database;
     dboptions = NULL;
     dbtty = NULL;
-    dbname = args.database? args.database : def_database;
 
     conn = PQsetdb(dbhost, dbport, dboptions, dbtty, dbname);
     if (PQstatus(conn) == CONNECTION_BAD)
@@ -73,7 +74,8 @@ int main(int argc, char *argv[])
     db_result = PQexec(conn, db_qry_sel1);
     if ((!db_result) || (PQresultStatus(db_result) != PGRES_TUPLES_OK))
     {
-        fprintf(stderr, db_err_qry1);
+        //fprintf(stderr, db_err_qry1);
+        fprintf(stderr, PQerrorMessage(db_result));
         PQclear(db_result);
         exit_on_error(conn);
     }
@@ -168,7 +170,8 @@ int update_drawdown(int drawdown_id, int new_value)
 
     if ((!db_result) || (PQresultStatus(db_result) != PGRES_COMMAND_OK))
     {
-        fprintf(stderr, db_err_upd1);
+        //fprintf(stderr, db_err_upd1);
+        fprintf(stderr, PQerrorMessage(db_result));
         PQclear(db_result);
         exit_on_error(conn);
     }
