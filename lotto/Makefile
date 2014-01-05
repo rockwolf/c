@@ -1,7 +1,7 @@
 # Makefile
 lotto: lotto.c
-        gcc -W -Wall -Werror -Wextra -o lotto lotto.c
+	clang -W -Werror -Wextra -o lotto lotto.c
 
 
 clean:
-        rm -rfv lotto *.o
+	rm -rfv lotto *.o
