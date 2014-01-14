@@ -9,8 +9,6 @@ int update_drawdown(int drawdown_id, int new_value);
 void print_list_data(PGresult db_result);
 PGresult get_main_list(PGconn *conn);
 
-//static char *db_err_qry1 = "SELECT command did not return tuples properly\n";
-//static char *db_err_upd1 = "Update command failed\n";
 static char *db_err_conn1 = "Connection to database \"%s\" failed.\n";
 static char *db_qry_upd1 = "update t_set drawdown_current = %s";
 static char *db_qry_sel1 =
