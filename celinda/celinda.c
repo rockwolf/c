@@ -67,6 +67,8 @@ PGresult get_main_list(PGconn *conn)
 {
     PGresult *db_result;
     
+    //TODO: add a limit to the query, based on a parameter
+    // to e.g. only show the last <count> records.
     PQexec(conn, db_qry_sel1);
     if ((!db_result) || (PQresultStatus(db_result) != PGRES_TUPLES_OK))
     {
