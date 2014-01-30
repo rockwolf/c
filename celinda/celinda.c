@@ -157,6 +157,8 @@ int update_drawdown(int drawdown_id, int new_value)
 {
     PGresult db_result;
     //This ain't gonna work man...
+    //TODO: db_qry_upd1 needs a where clause! Use drawdown_id to select, new_value to update.
+    //See also celinda.h
     db_result = PQexec(conn, db_qry_upd1, (char *)drawdown_id);
 
     if ((!db_result) || (PQresultStatus(db_result) != PGRES_COMMAND_OK))
