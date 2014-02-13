@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <libpq-fe.h>
+#include "libpq-fe.h"
 
 #include "celinda.h"
 #include "docopt.c"
@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
     }
 
     // Get the main list
+    PQclear(db_result);
     db_result = get_main_list(conn);
 
     // Print the results
@@ -69,7 +70,7 @@ PGresult get_main_list(PGconn *conn)
     
     //TODO: add a limit to the query, based on a parameter
     // to e.g. only show the last <count> records.
-    PQexec(conn, db_qry_sel1);
+    db_result = PQexec(conn, db_qry_sel1);
     if ((!db_result) || (PQresultStatus(db_result) != PGRES_TUPLES_OK))
     {
         //fprintf(stderr, db_err_qry1);
@@ -152,7 +153,7 @@ int get_input_int(char *atext)
     printf(atext);
     fgets(input, MAX_INT, stdin);
     printf("\n");
-    return input == "" ? -1 : (int)input;
+    return strncmp(input, "", 1) ? -1 : (int)input;
 }
 
 int update_drawdown(int drawdown_id, int new_value)
