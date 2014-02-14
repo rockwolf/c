@@ -18,6 +18,16 @@ int main(int argc, char *argv[])
     PGconn *conn; 
     PGresult *db_result;
     
+    char var_id[MAX_COL];
+    char var_long[MAX_COL];
+    char var_market[MAX_COL];
+    char var_commodity_name[MAX_COL];
+    char var_date[MAX_COL];
+    char var_price[MAX_COL];
+    char var_shares[MAX_COL];
+    
+    int i, recordcount;
+
     DocoptArgs args = docopt(argc, argv, /* help */ 1, /* version */ "1.00");
     printf("--host == %s\n", args.host);
     printf("--database == %s\n", args.database);
@@ -40,34 +50,6 @@ int main(int argc, char *argv[])
 
     // Get the main list
     PQclear(db_result);
-    db_result = get_main_list(conn);
-
-    // Print the results
-    print_header();
-    print_list_data(db_result);
-    
-    PQclear(db_result);
-    PQfinish(conn);
-
-    // Enter new drawdown value for an id in the list
-    printf("id = %d\n", input_drawdown_id());
-    //update_drawdown(get_drawdown_id(), get_drawdown_value());
-
-    return EXIT_SUCCESS;
-}
-
-/* Finish Postgresql actions, to exit in a clean way. */
-void exit_on_error(PGconn *conn)
-{
-    PQfinish(conn);
-    exit(EXIT_FAILURE);
-}
-
-/* Get the main list. */
-PGresult get_main_list(PGconn *conn)
-{
-    PGresult *db_result;
-    
     //TODO: add a limit to the query, based on a parameter
     // to e.g. only show the last <count> records.
     db_result = PQexec(conn, db_qry_sel1);
@@ -78,40 +60,9 @@ PGresult get_main_list(PGconn *conn)
         PQclear(db_result);
         exit_on_error(conn);
     }
-    return db_result;
-}
 
-/* Print output headers for main list. */
-void print_header()
-{
-    printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
-            msg_hdr1,
-            msg_hdr2,
-            msg_hdr3,
-            msg_hdr4,
-            msg_hdr5,
-            msg_hdr6,
-            msg_hdr7);
-    for(i=0;i<HEADER_LENGTH;i++)
-    {
-        printf(msg_hdr_line);
-    }
-    printf("\n");
-}
-
-/* Print data for main list. */
-void print_list_data(PGresult db_result)
-{
-    char var_id[MAX_COL];
-    char var_long[MAX_COL];
-    char var_market[MAX_COL];
-    char var_stock_name[MAX_COL];
-    char var_date[MAX_COL];
-    char var_price[MAX_COL];
-    char var_shares[MAX_COL];
-    
-    int i, recordcount;
-    
+    // Print the results
+    print_header();
     recordcount = PQntuples(db_result);
     for(i = 0; i < recordcount; i++)
     {
@@ -131,6 +82,41 @@ void print_list_data(PGresult db_result)
             var_price,
             var_shares);
     }
+    
+    PQclear(db_result);
+    PQfinish(conn);
+
+    // Enter new drawdown value for an id in the list
+    printf("id = %d\n", input_drawdown_id());
+    //update_drawdown(get_drawdown_id(), get_drawdown_value());
+
+    return EXIT_SUCCESS;
+}
+
+/* Finish Postgresql actions, to exit in a clean way. */
+void exit_on_error(PGconn *conn)
+{
+    PQfinish(conn);
+    exit(EXIT_FAILURE);
+}
+
+/* Print output headers for main list. */
+void print_header()
+{
+    int i;
+    printf("%-7s%-7s%-20s%-20s%-10s%-10s%-5s\n",
+            msg_hdr1,
+            msg_hdr2,
+            msg_hdr3,
+            msg_hdr4,
+            msg_hdr5,
+            msg_hdr6,
+            msg_hdr7);
+    for(i=0;i<HEADER_LENGTH;i++)
+    {
+        printf(msg_hdr_line);
+    }
+    printf("\n");
 }
 
 /* Ask for the drawdown id (found in the main list). */
@@ -158,11 +144,13 @@ int get_input_int(char *atext)
 
 int update_drawdown(int drawdown_id, int new_value)
 {
-    PGresult db_result;
+    PGconn *conn; 
+    PGresult *db_result;
+
     //This ain't gonna work man...
     //TODO: db_qry_upd1 needs a where clause! Use drawdown_id to select, new_value to update.
     //See also celinda.h
-    db_result = PQexec(conn, db_qry_upd1, (char *)drawdown_id);
+    //db_result = PQexec(conn, db_qry_upd1, (char *)drawdown_id);
 
     if ((!db_result) || (PQresultStatus(db_result) != PGRES_COMMAND_OK))
     {

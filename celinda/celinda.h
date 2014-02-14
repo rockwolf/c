@@ -6,8 +6,6 @@ int input_drawdown_id();
 int input_drawdown_value();
 int get_input_int(char *atext);
 int update_drawdown(int drawdown_id, int new_value);
-void print_list_data(PGresult db_result);
-PGresult get_main_list(PGconn *conn);
 
 static char *db_err_conn1 = "Connection to database \"%s\" failed.\n";
 static char *db_qry_upd1 = "update t_set drawdown_current = %s";
