@@ -6,8 +6,8 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
-#include <editline/readline.h>
-#include <editline/history.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 char *current_time(char *fmt, char *buf);
 bool unit_test();
@@ -23,6 +23,11 @@ int main(int argc, char *argv[])
     /* Version info */
     puts("Hina version 0.1");
     puts("Press Ctrl+c to quit\n");
+    
+    if (argc > 1 && argv)
+    {
+        usage();
+    }
 
     /* Main loop */
     while (1)
