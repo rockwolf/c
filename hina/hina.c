@@ -6,6 +6,8 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
+#include <editline/readline.h>
+#include <editline/history.h>
 
 char *current_time(char *fmt, char *buf);
 bool unit_test();
