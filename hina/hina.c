@@ -9,6 +9,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#include "hina.h"
+
 #define CMD_QUIT "quit"
 #define CMD_HELP "help"
 #define CMD_LIST "list"
