@@ -18,6 +18,19 @@ static void usage(void)
 
 int main(int argc, char *argv[])
 {
+    /* Version info */
+    puts("Hina version 0.1");
+    puts("Press Ctrl+c to quit\n");
+
+    /* Main loop */
+    while (1)
+    {
+        char* input = readline("hina> ");
+        add_history(input);
+        printf("Entered %s\n", input);
+        free(input);
+    }
+  return EXIT_SUCCESS;
 }
 
 char *current_time(char *fmt, char *buf)
