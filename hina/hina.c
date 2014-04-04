@@ -9,14 +9,28 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#define QUIT "quit"
-char *current_time(char *fmt, char *buf);
-bool unit_test();
+#define CMD_QUIT "quit"
+#define CMD_HELP "help"
+#define CMD_LIST "list"
+#define CMD_LS "ls"
+#define CMD_BM "bm"
+#define CMD_CMD "cmd"
+#define CMD_REPORT "report"
 
 static void usage(void)
 {
     printf("Usage:\n    %s\n", "hina");
     exit(EXIT_SUCCESS);
+}
+
+static void help(void)
+{
+    printf("Available commands:\n");
+    printf("    %s: quit.\n", CMD_QUIT);
+    printf("    %s: shows this help.\n", CMD_HELP);
+    printf("    %s|%s: list everything.\n", CMD_LIST, CMD_LS);
+    printf("    %s: show bookmarked urls.\n", CMD_BM);
+    printf("    %s: show bookmarked reports.\n", CMD_REPORT);
 }
 
 int main(int argc, char *argv[])
@@ -28,19 +42,44 @@ int main(int argc, char *argv[])
 
     /* Version info */
     puts("Hina version 0.1");
-    puts("Press Ctrl+c to quit\n");
+    puts("Enter 'quit' to quit.\n");
     
     /* Main loop */
     while (1)
     {
         char* input = readline("hina> ");
         add_history(input);
-        if(strncmp(input, QUIT, 4) == 0)
+        if(strncmp(input, CMD_QUIT, strlen(CMD_QUIT)) == 0)
         {
             free(input);
             break;
         }
-        printf("Entered %s\n", input);
+        else if(strncmp(input, CMD_HELP, strlen(CMD_HELP)) == 0)
+        {
+            help();
+        }
+        else if(strncmp(input, CMD_BM, strlen(CMD_BM)) == 0)
+        {
+           puts("Need to show some bookmarks."); 
+        }
+        else if(strncmp(input, CMD_CMD, strlen(CMD_CMD)) == 0)
+        {
+           puts("Need to show some commands."); 
+        }
+        else if
+        (
+            strncmp(input, CMD_LIST, strlen(CMD_LIST)) == 0
+            || strncmp(input, CMD_LS, strlen(CMD_LS)) == 0
+        )
+        {
+            puts("Need to show everything here.");
+        }
+        else if(strncmp(input, CMD_REPORT, strlen(CMD_REPORT)) == 0)
+        {
+            puts("Need to show some reports.");
+        }
+        else
+            puts("Unknown command...");
         free(input);
     }
   return EXIT_SUCCESS;
