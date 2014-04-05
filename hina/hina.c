@@ -18,6 +18,10 @@
 #define CMD_BM "bm"
 #define CMD_CMD "cmd"
 #define CMD_REPORT "report"
+#define DATA_FILE "hina.dat"
+#define VERSION_INFO "Hina version 0.1"
+#define CHUNK 1024
+
 
 static void usage(void)
 {
@@ -37,15 +41,45 @@ static void help(void)
 
 int main(int argc, char *argv[])
 {
+    FILE *fp;
+    //char buf[CHUNK];
+    size_t nread;
+
     if (argc > 1 && argv)
     {
         usage();
     }
 
-    /* Version info */
-    puts("Hina version 0.1");
-    puts("Enter 'quit' to quit.\n");
+    /* Read database */
+    char *buf = malloc(CHUNK);
+
+    if (buf == NULL)
+    {
+        puts("Error allocating memory while reading database.");
+        return EXIT_FAILURE;
+    }
     
+    fp = fopen(DATA_FILE, "r");
+    if (fp)
+    {
+        while ((nread = fread(buf, 1, CHUNK, fp)) > 0)
+        {
+            fwrite(buf, 1, nread, stdout);
+            if (ferror(fp))
+            {
+                printf("Error reading chunk in %s.", DATA_FILE);
+            }
+        } 
+        fclose(fp);
+    }
+    else
+    {
+        printf("Error reading %s.", DATA_FILE);
+    }
+
+    puts(VERSION_INFO);
+    puts("Enter 'quit' to quit.\n");
+
     /* Main loop */
     while (1)
     {
