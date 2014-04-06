@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <assert.h>
 
 #include "hina.h"
 
@@ -49,6 +50,27 @@ int main(int argc, char *argv[])
     {
         usage();
     }
+
+    /* test string_split */
+    char months[] = "JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC";
+    char** tokens;
+
+    printf("months=[%s]\n\n", months);
+
+    tokens = string_split(months, ",");
+
+    if (tokens)
+    {
+        int i;
+        for (i = 0; *(tokens + i); i++)
+        {
+            printf("month=[%s]\n", *(tokens + i));
+            free(*(tokens + i));
+        }
+        printf("\n");
+        free(tokens);
+    }
+    /* /test string_split */
 
     /* Read database */
     char *buf = malloc(CHUNK);
@@ -133,6 +155,49 @@ char *current_time(char *fmt, char *buf)
         printf("%stime failed\n", tz);
     strftime(buf, BUFSIZ, fmt, now);
     return buf;
+}
+
+char **string_split(char *a_string, const char *a_delimiter)
+{
+    char **result = NULL;
+    char *p = NULL;
+    int n_delims = 0;
+    int i;
+
+    p = strtok(a_string, a_delimiter);
+
+    /* Split string and append tokens to the result */
+    while (*p)
+    {
+        printf("test: %lu\n", strlen(p));
+        result = realloc(result, sizeof(char *) * ++n_delims);
+        printf("test1a: %s\n", p);
+
+        if (result == NULL)
+        {
+            puts("dang");
+            exit(EXIT_FAILURE); //memory allocation failed
+        }
+
+        puts("test1b");
+        result[n_delims - 1] = p;
+        puts("test1c");
+
+        p = strtok(NULL, a_delimiter);
+        puts("test3");
+    }
+    puts("test4");
+
+    /* Add space for trailing NULL. */
+    result = realloc(result, sizeof (char *) * (n_delims + 1));
+    result[n_delims] = 0;
+
+    if (result)
+    {
+        for (i = 0; i< (n_delims + 1); i++)
+            printf("result[%d] = %s\n", i, result[i]);
+    }
+    return result;
 }
 
 bool unit_test()
