@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
     printf("months=[%s]\n\n", months);
 
-    tokens = string_split(months, ",");
+    tokens = string_split((char *)months, ",");
 
     if (tokens)
     {
@@ -166,6 +166,8 @@ char **string_split(char *a_string, const char *a_delimiter)
 
     p = strtok(a_string, a_delimiter);
 
+    printf("test: a_string=%s", a_string);
+
     /* Split string and append tokens to the result */
     while (*p)
     {
@@ -186,6 +188,7 @@ char **string_split(char *a_string, const char *a_delimiter)
         p = strtok(NULL, a_delimiter);
         puts("test3");
     }
+
     puts("test4");
 
     /* Add space for trailing NULL. */
