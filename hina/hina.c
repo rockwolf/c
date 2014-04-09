@@ -52,24 +52,14 @@ int main(int argc, char *argv[])
     }
 
     /* test string_split */
-    char months[] = "JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC";
-    char** tokens;
+    char months[50];
+    //char test[50];
 
+    strcpy(months, "JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC");
+    //char *tokens[50];
     printf("months=[%s]\n\n", months);
 
-    tokens = string_split((char *)months, ",");
-
-    if (tokens)
-    {
-        int i;
-        for (i = 0; *(tokens + i); i++)
-        {
-            printf("month=[%s]\n", *(tokens + i));
-            free(*(tokens + i));
-        }
-        printf("\n");
-        free(tokens);
-    }
+    string_split(months, ",");
     /* /test string_split */
 
     /* Read database */
@@ -143,7 +133,7 @@ int main(int argc, char *argv[])
   return EXIT_SUCCESS;
 }
 
-char *current_time(char *fmt, char *buf)
+/*char *current_time(char *fmt, char *buf)
 {
     struct tm *now = NULL;
     struct tm *(*tztime)(const time_t *) = localtime;
@@ -155,40 +145,37 @@ char *current_time(char *fmt, char *buf)
         printf("%stime failed\n", tz);
     strftime(buf, BUFSIZ, fmt, now);
     return buf;
-}
+}*/
 
-char **string_split(char *a_string, const char *a_delimiter)
+void string_split(char *a_string, const char *a_delimiter)
 {
-    char **result = NULL;
+    char *result = NULL;
     char *p = NULL;
     int n_delims = 0;
     int i;
 
+    printf("\ntest: a_string=%s", a_string);
     p = strtok(a_string, a_delimiter);
 
-    printf("test: a_string=%s", a_string);
 
     /* Split string and append tokens to the result */
-    while (*p)
+    while (p != NULL)
     {
-        printf("test: %lu\n", strlen(p));
-        result = realloc(result, sizeof(char *) * ++n_delims);
+        //result = realloc(result, sizeof(char *) * ++n_delims);
         printf("test1a: %s\n", p);
 
-        if (result == NULL)
+        /*if (result == NULL)
         {
             puts("dang");
             exit(EXIT_FAILURE); //memory allocation failed
-        }
+        }*/
 
-        puts("test1b");
-        result[n_delims - 1] = p;
+        //result[n_delims - 1] = *p;
+        printf("test1b: delim = %s", a_delimiter);
+
         puts("test1c");
-
         p = strtok(NULL, a_delimiter);
-        puts("test3");
     }
-
     puts("test4");
 
     /* Add space for trailing NULL. */
@@ -198,9 +185,9 @@ char **string_split(char *a_string, const char *a_delimiter)
     if (result)
     {
         for (i = 0; i< (n_delims + 1); i++)
-            printf("result[%d] = %s\n", i, result[i]);
+            printf("result[%d] = %c\n", i, result[i]);
     }
-    return result;
+    //return result;
 }
 
 bool unit_test()
