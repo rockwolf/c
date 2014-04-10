@@ -18,7 +18,6 @@
 #define CMD_LS "ls"
 #define CMD_BM "bm"
 #define CMD_CMD "cmd"
-#define CMD_REPORT "report"
 #define DATA_FILE "hina.dat"
 #define VERSION_INFO "Hina version 0.1"
 #define CHUNK 1024
@@ -37,7 +36,7 @@ static void help(void)
     printf("    %s: shows this help.\n", CMD_HELP);
     printf("    %s|%s: list everything.\n", CMD_LIST, CMD_LS);
     printf("    %s: show bookmarked urls.\n", CMD_BM);
-    printf("    %s: show bookmarked reports.\n", CMD_REPORT);
+    printf("    %s: show bookmarked commands.\n", CMD_CMD);
 }
 
 int main(int argc, char *argv[])
@@ -60,6 +59,7 @@ int main(int argc, char *argv[])
     printf("months=[%s]\n\n", months);
 
     string_split(months, ",");
+    //TODO: create array of strings, with a length of [linesinfile][BUF]
     /* /test string_split */
 
     /* Read database */
@@ -122,10 +122,6 @@ int main(int argc, char *argv[])
         )
         {
             puts("Need to show everything here.");
-        }
-        else if(strncmp(input, CMD_REPORT, strlen(CMD_REPORT)) == 0)
-        {
-            puts("Need to show some reports.");
         }
         else
             puts("Unknown command...");
