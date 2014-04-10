@@ -21,6 +21,7 @@
 #define DATA_FILE "hina.dat"
 #define VERSION_INFO "Hina version 0.1"
 #define CHUNK 1024
+#define BUF 4
 
 
 static void usage(void)
@@ -44,23 +45,12 @@ int main(int argc, char *argv[])
     FILE *fp;
     //char buf[CHUNK];
     size_t nread;
+    int i;
 
     if (argc > 1 && argv)
     {
         usage();
     }
-
-    /* test string_split */
-    char months[50];
-    //char test[50];
-
-    strcpy(months, "JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC");
-    //char *tokens[50];
-    printf("months=[%s]\n\n", months);
-
-    string_split(months, ",");
-    //TODO: create array of strings, with a length of [linesinfile][BUF]
-    /* /test string_split */
 
     /* Read database */
     char *buf = malloc(CHUNK);
@@ -71,6 +61,27 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
     
+    /* test string_split */
+    char months[50];
+    char *s[BUF];
+    //char test[50];
+
+    strncpy(months, "JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC", 50);
+    //char *tokens[50];
+    printf("months=[%s]\n\n", months);
+
+    string_split(months, ",", s, BUF);
+    if (s)
+    {
+        for (i = 0; i< (BUF+1); i++)
+        {
+            //if(s[i] )
+                printf("s[%d] = %s\n", i, s[i]);
+        }
+    }
+
+    /* /test string_split */
+
     fp = fopen(DATA_FILE, "r");
     if (fp)
     {
@@ -96,7 +107,7 @@ int main(int argc, char *argv[])
     /* Main loop */
     while (1)
     {
-        char* input = readline("hina> ");
+        char *input = readline("hina> ");
         add_history(input);
         if(strncmp(input, CMD_QUIT, strlen(CMD_QUIT)) == 0)
         {
@@ -144,47 +155,32 @@ int main(int argc, char *argv[])
     return buf;
 }*/
 
-void string_split(char *a_string, const char *a_delimiter)
+void string_split(char *a_string, const char *a_delimiter, char *split_strings[], size_t split_size)
 {
-    char *result = NULL;
     char *p = NULL;
     int n_delims = 0;
-    int i;
 
-    printf("\ntest: a_string=%s", a_string);
     p = strtok(a_string, a_delimiter);
 
-
+    printf("test: %d\n", (int)split_size);
     /* Split string and append tokens to the result */
-    while (p != NULL)
+    while ((p != NULL)) // && (n_delims <= (int)split_size))
     {
-        //result = realloc(result, sizeof(char *) * ++n_delims);
-        printf("test1a: %s\n", p);
+        //result = realloc(result,  ++n_delims * sizeof(char) * BUF);
 
-        /*if (result == NULL)
+        /*if (split_strings == NULL)
         {
-            puts("dang");
             exit(EXIT_FAILURE); //memory allocation failed
         }*/
 
-        //result[n_delims - 1] = *p;
-        printf("test1b: delim = %s", a_delimiter);
+        split_strings[n_delims - 1] = *p;
 
-        puts("test1c");
         p = strtok(NULL, a_delimiter);
     }
-    puts("test4");
 
     /* Add space for trailing NULL. */
-    result = realloc(result, sizeof (char *) * (n_delims + 1));
-    result[n_delims] = 0;
-
-    if (result)
-    {
-        for (i = 0; i< (n_delims + 1); i++)
-            printf("result[%d] = %c\n", i, result[i]);
-    }
-    //return result;
+    //result = realloc(result, sizeof (char *) * (n_delims + 1));
+    split_strings[n_delims] = 0;
 }
 
 bool unit_test()
