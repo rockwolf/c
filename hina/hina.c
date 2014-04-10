@@ -76,6 +76,7 @@ int main(int argc, char *argv[])
     {
         while ((nread = fread(buf, 1, CHUNK, fp)) > 0)
         {
+            // TODO: write to char splitstr[BUF] instead of stdout.
             fwrite(buf, 1, nread, stdout);
             if (ferror(fp))
             {
