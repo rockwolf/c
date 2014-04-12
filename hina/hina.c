@@ -63,21 +63,22 @@ int main(int argc, char *argv[])
     
     /* test string_split */
     char months[50];
-    char *s[BUF];
+    char **s;
     //char test[50];
 
     strncpy(months, "JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC", 50);
     //char *tokens[50];
     printf("months=[%s]\n\n", months);
 
-    string_split(months, ",", s, BUF);
+    s = str_split(months, ',');
     if (s)
     {
-        for (i = 0; i< (BUF+1); i++)
+        for (i = 0; *(s + i); i++)
         {
-            //if(s[i] )
-                printf("s[%d] = %s\n", i, s[i]);
+                printf("s = %s\n", *(s + i));
+                free(*(s + i));
         }
+        free(s);
     }
 
     /* /test string_split */
@@ -155,16 +156,16 @@ int main(int argc, char *argv[])
     return buf;
 }*/
 
-char** str_split(char* a_str, const char a_delim)
+char **str_split(char *a_str, const char a_delim)
 {
-    char** result = 0;
-    size_t count = 0;
-    char* tmp = a_str;
-    char* last_comma = 0;
+    char **result    = 0;
+    size_t count     = 0;
+    char *tmp        = a_str;
+    char *last_comma = 0;
     char delim[2];
     delim[0] = a_delim;
     delim[1] = 0;
-    
+
     /* Count how many elements will be extracted. */
     while (*tmp)
     {
@@ -175,16 +176,21 @@ char** str_split(char* a_str, const char a_delim)
         }
         tmp++;
     }
+
     /* Add space for trailing token. */
     count += last_comma < (a_str + strlen(a_str) - 1);
+
     /* Add space for terminating null string so caller
        knows where the list of returned strings ends. */
     count++;
+
     result = malloc(sizeof(char*) * count);
+
     if (result)
     {
         size_t idx  = 0;
         char* token = strtok(a_str, delim);
+
         while (token)
         {
             assert(idx < count);
@@ -194,35 +200,8 @@ char** str_split(char* a_str, const char a_delim)
         assert(idx == count - 1);
         *(result + idx) = 0;
     }
+
     return result;
-}
-
-void string_split(char *a_string, const char *a_delimiter, char *split_strings[], size_t split_size)
-{
-    char *p = NULL;
-    int n_delims = 0;
-
-    p = strtok(a_string, a_delimiter);
-
-    printf("test: %d\n", (int)split_size);
-    /* Split string and append tokens to the result */
-    while ((p != NULL)) // && (n_delims <= (int)split_size))
-    {
-        //result = realloc(result,  ++n_delims * sizeof(char) * BUF);
-
-        /*if (split_strings == NULL)
-        {
-            exit(EXIT_FAILURE); //memory allocation failed
-        }*/
-
-        split_strings[n_delims - 1] = *p;
-
-        p = strtok(NULL, a_delimiter);
-    }
-
-    /* Add space for trailing NULL. */
-    //result = realloc(result, sizeof (char *) * (n_delims + 1));
-    split_strings[n_delims] = 0;
 }
 
 bool unit_test()
