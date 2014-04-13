@@ -1,3 +1,3 @@
-bm_personal;Personal website;url:http://c.dommel.be
-bm_nintai;Nintai website;url:http://www.nintaitrading.eu
-cmd_nintai;Trading ods;cmd:trading_ods.sh
+personal;Personal website;http://c.dommel.be
+nintai;Nintai website;http://www.nintaitrading.eu
+nintai;Trading ods;trading_ods.sh
