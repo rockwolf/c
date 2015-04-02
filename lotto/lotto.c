@@ -15,7 +15,13 @@ int main(int argc, char *argv[])
 {
     int i;
     int numbers[NUM] = {0};
-	
+
+    if (argc > 1)
+    {
+        printf("No parameters required, [%s...] given.\n", argv[1]);
+        exit(1);
+    }
+    
     srand(time(NULL)); //randomize the seed
     for(i = 0; i < NUM;)
     {
