@@ -1,12 +1,15 @@
 /* See LICENSE.txt file for license and copyright information. */
 
 #include <stdio.h>
-#include "calculator_finance.c"
-#include "unit_test.c"
+#include <stdbool.h>
+#include "calculator_finance.h"
+#include "unit_test.h"
 
 int main(int argc, char* argv[])
 {
-    // Tests go here.;
+    if (argc > 1)
+        printf("No parameters required... [%s]\n", argv[1]);
+
     test_calculate_percentage_of();
     return 0;
 }

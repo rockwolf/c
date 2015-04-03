@@ -1,9 +1,6 @@
 /* See LICENSE.txt file for license and copyright information. */
-#include <stdio.h>
-#include <stdbool.h>
-#include "unit_test.c"
 
-double calculate_percentage_of(double a_value, double a_from_value);
+#include "calculator_finance.h"
 
 /**********************************************************************
  * Calculate what percentage a_value is from a_from_value.
@@ -12,17 +9,6 @@ double calculate_percentage_of(double a_value, double a_from_value)
 {
   return (a_value / a_from_value * 100.0);
 };
-
-// Todo: put these conversion functions in the generic c repo.
-char* bool_to_success(bool a_bool)
-{
-    return a_bool ? "success" : "failure";
-}
-
-char* bool_to_string(bool a_bool)
-{
-    return a_bool ? "true" : "false";
-}
 
 /*function ConvertFromOrig(a_price, a_exchange_rate: Double): Double;
 function ConvertToOrig(a_converted_price, a_exchange_rate: Double): Double;
