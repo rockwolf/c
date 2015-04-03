@@ -1,6 +1,7 @@
 /* See LICENSE.txt file for license and copyright information. */
 #include <stdio.h>
 #include <stdbool.h>
+#include "unit_test.c"
 
 double calculate_percentage_of(double a_value, double a_from_value);
 
@@ -20,18 +21,9 @@ char* bool_to_success(bool a_bool)
 
 char* bool_to_string(bool a_bool)
 {
-  return a_bool ? "true" : "false";
+    return a_bool ? "true" : "false";
 }
 
-int main(int argc, char* argv[])
-{
-  // Tests go here.;
-  double result;
-  // TODO: move the test into a seperate file.
-  result = calculate_percentage_of(2.0, 50.0); 
-	printf("calculate_percentage_of(2.0, 50.0) = %.2f [%s]\n", result, bool_to_success(result == 4.0));
-	return 0;
-}
 /*function ConvertFromOrig(a_price, a_exchange_rate: Double): Double;
 function ConvertToOrig(a_converted_price, a_exchange_rate: Double): Double;
 {%ENDREGION}
