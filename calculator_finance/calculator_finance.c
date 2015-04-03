@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
   double result;
   // TODO: move the test into a seperate file.
   result = calculate_percentage_of(2.0, 50.0); 
-	printf("calculate_percentage_of(2.0, 50.0) = %f [%s]\n", result, bool_to_success(result == 4.0));
+	printf("calculate_percentage_of(2.0, 50.0) = %.2f [%s]\n", result, bool_to_success(result == 4.0));
 	return 0;
 }
 /*function ConvertFromOrig(a_price, a_exchange_rate: Double): Double;
