@@ -3,6 +3,7 @@
 #include "calculator_finance.h"
 
 /**********************************************************************
+ * calculate_percentage_of:
  * Calculate what percentage a_value is from a_from_value.
  **********************************************************************/
 double calculate_percentage_of(double a_value, double a_from_value)
@@ -11,7 +12,7 @@ double calculate_percentage_of(double a_value, double a_from_value)
 };
 
 /**********************************************************************
- *  ConvertFromOrig:
+ * convert_from_orig:
  * Returns a price, with an exchange rate applied to it.
  * Used to convert a given currency to a new currency.
  **********************************************************************/
@@ -20,48 +21,22 @@ double convert_from_orig(double a_price, double a_exchange_rate)
     return a_price * a_exchange_rate;
 }
 
-/*function ConvertFromOrig(a_price, a_exchange_rate: Double): Double;
-function ConvertToOrig(a_converted_price, a_exchange_rate: Double): Double;
-{%ENDREGION}
-{%REGION 'Before trade'}
-function CalculateStoploss(a_price, a_shares, a_tax, a_commission, a_risk, a_pool: Double; a_is_long: Boolean): Double;
-function CalculateRiskInput(a_pool, a_risk: Double): Double;
-function CalculateRiskInitial(a_price, a_shares, a_tax, a_commission, a_stoploss: Double; a_is_long: Boolean): Double;
-function CalculateAmount(a_price, a_shares: Double): Double;
-function CalculateAmountWithTaxAndCommission(a_price, a_shares, a_tax, a_commission: Double; a_transaction_type: TTransactionType): Double;
-function CalculateAmountWithTax(a_shares, a_price, a_tax: Double; a_transaction_type: TTransactionType): Double;
-function CostTransaction(a_price, a_shares, a_tax, a_commission: Double): Double;
-function CostTax(a_amount, a_commission, a_shares, a_price: Double; a_transaction_type: TTransactionType): Double;
-function CalculateSharesRecommended(a_pool, a_commission, a_tax, a_price: Double): Double;
-function CalculatePrice(a_amount, a_shares, a_tax, a_commission: Double; a_transaction_type: TTransactionType): Double;
-function CalculateLeveragedContracts(a_n: Integer): Integer;
-{%ENDREGION}
-{%REGION 'After trade'}
-function CalculateRiskActual(a_price_buy, a_shares_buy, a_tax_buy, a_commission_buy,
-a_price_sell, a_shares_sell, a_tax_sell, a_commission_sell,
-a_risk_initial, a_profit_loss: Double): Double;
-function CalculateRMultiple(a_profit_loss, a_risk_initial: Double): Double;
-function CalculateCostTotal(a_tax_buy, a_commission_buy, a_tax_sell, a_commission_sell: Double): Double;
-function CalculateProfitLoss(a_price_buy, a_shares_buy, a_price_sell, a_shares_sell: Double): Double;
-function CalculateProfitLossTotal(a_price_buy, a_shares_buy, a_price_sell, a_shares_sell, a_tax_buy, a_tax_sell, a_commission_buy, a_commission_sell: Double): Double;
-function CalculateCostOther(a_cost_total, a_profit_loss: Double): Double;
-{%ENDREGION}
-const
+/**********************************************************************
+ * convert_to_orig:
+ * Returns a price in the original currency, with the
+ * exchange rate no longer applied to it.
+ **********************************************************************/
+double convert_to_orig(double a_converted_price, double a_exchange_rate)
+{
+    return a_converted_price / a_exchange_rate;
+}
+
+/*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
 implementation
 uses
 Math;
-{%REGION 'Other'}
-{*******************************************************************************
-ConvertFromOrig:
-Returns a price, with an exchange rate applied to it.
-Used to convert a given currency to a new currency.
-*******************************************************************************}
-function ConvertFromOrig(a_price, a_exchange_rate: Double): Double;
-begin
-Result := a_price * a_exchange_rate;
-end;
 {*******************************************************************************
 ConvertToOrig:
 Returns a price in the original currency, with the

@@ -16,9 +16,29 @@ static char* test_calculate_percentage_of()
     return 0;
 }
 
+static char* test_convert_from_orig()
+{
+    mu_assert(
+            "[FAIL] Wrong result for convert_from_orig(12.0, 0.5)!",
+            convert_from_orig(12.0, 0.5) == 6.0
+    ); 
+    return 0;
+}
+
+static char* test_convert_to_orig()
+{
+    mu_assert(
+            "[FAIL] Wrong result for convert_to_orig(12.0, 0.5)!",
+            convert_from_orig(12.0, 0.5) == 6.0
+    ); 
+    return 0;
+}
+
 static char* test_all()
 {
     mu_run_test(test_calculate_percentage_of);
+    mu_run_test(test_convert_from_orig);
+    mu_run_test(test_convert_to_orig);
     return 0;
 }
 
