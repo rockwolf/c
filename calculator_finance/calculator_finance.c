@@ -10,6 +10,16 @@ double calculate_percentage_of(double a_value, double a_from_value)
   return (a_value / a_from_value * 100.0);
 };
 
+/**********************************************************************
+ *  ConvertFromOrig:
+ * Returns a price, with an exchange rate applied to it.
+ * Used to convert a given currency to a new currency.
+ **********************************************************************/
+double convert_from_orig(double a_price, double a_exchange_rate)
+{
+    return a_price * a_exchange_rate;
+}
+
 /*function ConvertFromOrig(a_price, a_exchange_rate: Double): Double;
 function ConvertToOrig(a_converted_price, a_exchange_rate: Double): Double;
 {%ENDREGION}
