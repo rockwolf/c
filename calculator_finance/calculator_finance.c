@@ -1,6 +1,10 @@
 /* See LICENSE.txt file for license and copyright information. */
 
+#include <stdio.h>
+#include <stdbool.h>
 #include "calculator_finance.h"
+
+/// Helper functions
 
 /**********************************************************************
  * calculate_percentage_of:
@@ -31,51 +35,51 @@ double convert_to_orig(double a_converted_price, double a_exchange_rate)
     return a_converted_price / a_exchange_rate;
 }
 
+/// Before trade
+
+/**********************************************************************
+ * calculate_stoploss:
+ * Calculates the stoploss.
+ * Note:
+ * Long
+ * ----
+ * amount selling at stoploss - amount at buying = initial risk of pool
+ * (S.Pb + S.Pb.T + C) - (S.Ps - S.Ps.T - C) = R/100 * pool
+ * Short
+ * -----
+ * amount selling - amount buying at stoploss = initial risk of pool
+ * (S.Psl + S.Psl.T + C) - (S.Ps - S.Ps.T - C) = R/100 * pool
+ **********************************************************************/
+double calculate_stoploss(double a_price, int a_shares, double a_tax, double a_commission, double a_risk, double a_pool, int a_is_long)
+{
+    double l_numerator = 0.0;
+    double l_denominator = 0.0;
+    printf("a_price = %.2f, a_shares = %d, a_tax = %.2f, a_commission = %.2f, a_risk = %.2f, a_pool = %.2f, a_is_long = %d\n",
+            a_price, a_shares, a_tax, a_commission, a_risk, a_pool, a_is_long);
+    if (a_is_long == 1)
+    {
+        l_numerator = a_shares * a_price * (1.0 + a_tax / 100.0) - a_risk / 100.0 * a_pool + 2.0 * a_commission;
+        printf("-long- %.2f\n", l_numerator);
+        l_denominator = a_shares * 1.0 - a_tax / 100.0;
+        printf("-long- %.2f\n", l_denominator);
+    }
+    else
+    {
+        l_numerator = a_risk / 100.0 * a_pool + a_shares * a_price * (1.0 - a_tax / 100.0) - 2.0 * a_commission;
+        printf("-short- %.2f\n", l_numerator);
+        l_denominator = a_shares * 1.0 + a_tax / 100.0;
+        printf("-short- %.2f\n", l_denominator);
+    }
+    return l_numerator / l_denominator;
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
 implementation
 uses
 Math;
-{*******************************************************************************
-ConvertToOrig:
-Returns a price in the original currency, with the
-exchange rate no longer applied to it.
-*******************************************************************************}
-function ConvertToOrig(a_converted_price, a_exchange_rate: Double): Double;
-begin
-Result := a_converted_price / a_exchange_rate;
-end;
-{%ENDREGION}
 {%REGION 'Before trade'}
-{*******************************************************************************
-Calculates the stoploss.
-Note:
-Long
-----
-amount selling at stoploss - amount at buying = initial risk of pool
-(S.Pb + S.Pb.T + C) - (S.Ps - S.Ps.T - C) = R/100 * pool
-Short
------
-amount selling - amount buying at stoploss = initial risk of pool
-(S.Psl + S.Psl.T + C) - (S.Ps - S.Ps.T - C) = R/100 * pool
-*******************************************************************************}
-function CalculateStoploss(a_price, a_shares, a_tax, a_commission, a_risk, a_pool: Double; a_is_long: Boolean): Double;
-var
-l_numerator, l_denominator: extended;
-begin
-if is_long then
-begin
-l_numerator := a_shares * a_price * (1.0 + a_tax / 100.0) - a_risk / 100.0 * a_pool + 2.0 * a_commission;
-l_denominator := a_shares * 1.0 - a_tax / 100.0;
-end
-else
-begin
-l_numerator := a_risk / 100.0 * a_pool + a_shares * a_price * (1.0 - a_tax / 100.0) - 2.0 * a_commission;
-l_denomitator := a_shares * 1.0 + a_tax / 100.0;
-end;
-Result := l_numerator / l_denominator;
-end;
 {*******************************************************************************
 Calculates the risk based on total pool and input.
 Consider this the theoretical risk we want to take.
