@@ -61,6 +61,19 @@ char* test_calculate_risk_input()
     return 0;
 }
 
+char* test_calculate_risk_initial()
+{
+    mu_assert(
+            "[FAIL] -short- Wrong result for calculate_risk_initial(12.0, 2, 3.0, 1.0, 2.0, 0)!",
+            equals(calculate_risk_initial(12.0, 2, 3.0, 1.0, 10.0, 0), -0.68, C_PRECISION)
+    ); 
+    mu_assert(
+            "[FAIL] -long- Wrong result for calculate_risk_initial(12.0, 2, 3.0, 1.0, 2.0, 1)!",
+            equals(calculate_risk_initial(12.0, 2, 3.0, 1.0, 10.0, 1), 7.32, C_PRECISION)
+    ); 
+    return 0;
+}
+
 char* test_all_trade()
 {
     mu_run_test(test_calculate_percentage_of);
@@ -68,5 +81,6 @@ char* test_all_trade()
     mu_run_test(test_convert_to_orig);
     mu_run_test(test_calculate_stoploss);
     mu_run_test(test_calculate_risk_input);
+    mu_run_test(test_calculate_risk_initial);
     return 0;
 }
