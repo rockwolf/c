@@ -99,6 +99,15 @@ double calculate_risk_initial(double a_price, int a_shares, double a_tax, double
         return a_shares * a_stoploss * (1.0 + a_tax / 100.0) - a_shares * a_price * (1.0 - a_tax / 100.0) + 2.0 * a_commission;
 }
 
+/**********************************************************************
+ * calculate_amount:
+ * Calculates the amount without tax and commission.
+ **********************************************************************/
+double calculate_amount(double a_price, int a_shares)
+{
+    return a_price * a_shares;
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
@@ -106,13 +115,6 @@ implementation
 uses
 Math;
 {%REGION 'Before trade'}
-{*******************************************************************************
-Calculates the amount without tax and commission.
-*******************************************************************************}
-function CalculateAmount(a_price, a_shares: Double): Double;
-begin
-Result := a_price * a_shares;
-end;
 {*******************************************************************************
 Calculates the amount, including tax and commission.
 Note:

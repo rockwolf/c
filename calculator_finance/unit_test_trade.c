@@ -74,6 +74,15 @@ char* test_calculate_risk_initial()
     return 0;
 }
 
+char* test_calculate_amount()
+{
+    mu_assert(
+            "[FAIL] Wrong result for calculate_amount(12.0, 2)!",
+            calculate_amount(12.0, 2) == 24.0
+    ); 
+    return 0;
+}
+
 char* test_all_trade()
 {
     mu_run_test(test_calculate_percentage_of);
@@ -82,5 +91,6 @@ char* test_all_trade()
     mu_run_test(test_calculate_stoploss);
     mu_run_test(test_calculate_risk_input);
     mu_run_test(test_calculate_risk_initial);
+    mu_run_test(test_calculate_amount);
     return 0;
 }
