@@ -52,11 +52,21 @@ char* test_calculate_stoploss()
     return 0;
 }
 
+char* test_calculate_risk_input()
+{
+    mu_assert(
+            "[FAIL] Wrong result for calculate_risk_input(10000.0, 2.0)!",
+            equals(calculate_risk_input(10000.0, 2.0), 200.0, C_PRECISION)
+    ); 
+    return 0;
+}
+
 char* test_all_trade()
 {
     mu_run_test(test_calculate_percentage_of);
     mu_run_test(test_convert_from_orig);
     mu_run_test(test_convert_to_orig);
     mu_run_test(test_calculate_stoploss);
+    mu_run_test(test_calculate_risk_input);
     return 0;
 }

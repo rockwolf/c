@@ -67,6 +67,16 @@ double calculate_stoploss(double a_price, int a_shares, double a_tax, double a_c
     return l_numerator / l_denominator;
 }
 
+/**********************************************************************
+ * calculate_risk_input:
+ * Calculates the risk based on total pool and input.
+ * Consider this the theoretical risk we want to take.
+ **********************************************************************/
+double calculate_risk_input(double a_pool, double a_risk)
+{
+    return a_risk / 100.0 * a_pool;
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
@@ -74,14 +84,6 @@ implementation
 uses
 Math;
 {%REGION 'Before trade'}
-{*******************************************************************************
-Calculates the risk based on total pool and input.
-Consider this the theoretical risk we want to take.
-*******************************************************************************}
-function CalculateRiskInput(a_pool, a_risk: Double): Double;
-begin
-Result := a_risk / 100.0 * a_pool;
-end;
 {*******************************************************************************
 Calculates the initial risk.
 This is the risk we will take if our stoploss is reached.
