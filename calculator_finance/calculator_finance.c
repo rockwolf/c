@@ -2,9 +2,10 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "types.h"
 #include "calculator_finance.h"
 
-/// Helper functions
+// Helper functions
 
 /**********************************************************************
  * calculate_percentage_of:
@@ -35,7 +36,7 @@ double convert_to_orig(double a_converted_price, double a_exchange_rate)
     return a_converted_price / a_exchange_rate;
 }
 
-/// Before trade
+// Before trade
 
 /**********************************************************************
  * calculate_stoploss:
@@ -108,6 +109,21 @@ double calculate_amount(double a_price, int a_shares)
     return a_price * a_shares;
 }
 
+/**********************************************************************
+ * Calculates the amount, including tax and commission.
+ * Note:
+ * -----
+ * AMT = SP + SPT + C (buy)
+ * AMT = SP - SPT - C (sell)
+ **********************************************************************/
+double calculate_amount_with_tax_and_commission(double a_price, int a_shares, double a_tax, double a_commission, transaction_type_t a_transaction_type)
+{
+    if (a_transaction_type == BUY)
+        return a_shares * a_price + a_shares * a_price * a_tax + a_commission;
+    else
+        return a_shares * a_price - a_shares * a_price * a_tax - a_commission;
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
@@ -115,24 +131,6 @@ implementation
 uses
 Math;
 {%REGION 'Before trade'}
-{*******************************************************************************
-Calculates the amount, including tax and commission.
-Note:
------
-AMT = SP + SPT + C (buy)
-AMT = SP - SPT - C (sell)
-*******************************************************************************}
-function CalculateAmountWithTaxAndCommission(a_price, a_shares, a_tax, a_commission: Double; a_transaction_type: TTransactionType): Double;
-begin
-if a_transaction_type = ttBuy then
-begin
-Result := a_shares * a_price + a_shares * a_price * a_tax + commission;
-end
-else
-Result := a_shares * a_price - a_shares * a_price * a_tax - a_commission;
-begin
-end;
-end;
 {*******************************************************************************
 Calculates the amount (buy/sell) with tax included, but not the commission.
 Note:

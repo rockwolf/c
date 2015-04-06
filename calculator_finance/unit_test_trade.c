@@ -2,13 +2,14 @@
 
 #include <stdio.h>
 #include <math.h>
+#include "const.h"
+#include "types.h"
 #include "unit_test_trade.h"
 #include "calculator_finance.h"
-#include "const.h"
 #include "general_functions.h"
 #include "minunit.h"
 
-/// Helper functions
+// Helper functions
 
 char* test_calculate_percentage_of()
 {
@@ -37,7 +38,7 @@ char* test_convert_to_orig()
     return 0;
 }
 
-/// Before trade
+// Before trade
 
 char* test_calculate_stoploss()
 {
@@ -83,6 +84,22 @@ char* test_calculate_amount()
     return 0;
 }
 
+char* test_calculate_amount_with_tax_and_commission()
+{
+    transaction_type_t a_transaction_type_t;
+    a_transaction_type_t = BUY;
+    mu_assert(
+            "[FAIL] -buy- Wrong result for calculate_amount_with_tax_and_commission(12.0, 2, 3.0, 1.0, BUY)!",
+            equals(calculate_amount_with_tax_and_commission(12.0, 2, 3.0, 1.0, a_transaction_type_t), 97.0, C_PRECISION)
+    ); 
+    a_transaction_type_t = SELL;
+    mu_assert(
+            "[FAIL] -sell- Wrong result for calculate_amount_with_tax_and_commission(12.0, 2, 3.0, 1.0, SELL)!",
+            equals(calculate_amount_with_tax_and_commission(12.0, 2, 3.0, 1.0, a_transaction_type_t), -49.0, C_PRECISION)
+    ); 
+    return 0;
+}
+
 char* test_all_trade()
 {
     mu_run_test(test_calculate_percentage_of);
@@ -92,5 +109,6 @@ char* test_all_trade()
     mu_run_test(test_calculate_risk_input);
     mu_run_test(test_calculate_risk_initial);
     mu_run_test(test_calculate_amount);
+    mu_run_test(test_calculate_amount_with_tax_and_commission);
     return 0;
 }

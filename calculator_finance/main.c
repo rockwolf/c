@@ -2,6 +2,9 @@
 
 #include <stdio.h>
 #include "unit_test.h"
+#include "const.h"
+
+const double C_PRECISION = 0.000001;
 
 int main(int argc, char* argv[])
 {

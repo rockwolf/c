@@ -1,1 +1,3 @@
-const double C_PRECISION = 0.000001;
+
+// Const
+extern const double C_PRECISION;
