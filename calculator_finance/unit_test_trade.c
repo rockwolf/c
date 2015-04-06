@@ -100,6 +100,22 @@ char* test_calculate_amount_with_tax_and_commission()
     return 0;
 }
 
+char* test_calculate_amount_with_tax()
+{
+    transaction_type_t a_transaction_type_t;
+    a_transaction_type_t = BUY;
+    mu_assert(
+            "[FAIL] -buy- Wrong result for calculate_amount_with_tax(12.0, 2, 3.0, BUY)!",
+            equals(calculate_amount_with_tax(12.0, 2, 3.0, a_transaction_type_t), 23.28, C_PRECISION)
+    ); 
+    a_transaction_type_t = SELL;
+    mu_assert(
+            "[FAIL] -sell- Wrong result for calculate_amount_with_tax(12.0, 2, 3.0, SELL)!",
+            equals(calculate_amount_with_tax(12.0, 2, 3.0, a_transaction_type_t), 24.72, C_PRECISION)
+    ); 
+    return 0;
+}
+
 char* test_all_trade()
 {
     mu_run_test(test_calculate_percentage_of);
@@ -110,5 +126,6 @@ char* test_all_trade()
     mu_run_test(test_calculate_risk_initial);
     mu_run_test(test_calculate_amount);
     mu_run_test(test_calculate_amount_with_tax_and_commission);
+    mu_run_test(test_calculate_amount_with_tax);
     return 0;
 }

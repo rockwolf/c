@@ -6,4 +6,6 @@ char* test_convert_to_orig();
 char* test_calculate_stoploss();
 char* test_calculate_risk_input();
 char* test_calculate_amount();
+char* test_calculate_amount_with_tax_and_commission();
+char* test_calculate_amount_with_tax();
 char* test_all_trade();

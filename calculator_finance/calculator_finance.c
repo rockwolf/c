@@ -124,6 +124,22 @@ double calculate_amount_with_tax_and_commission(double a_price, int a_shares, do
         return a_shares * a_price - a_shares * a_price * a_tax - a_commission;
 }
 
+/**********************************************************************
+ * calculate_amount_with_tax:
+ * Calculates the amount (buy/sell) with tax included, but not the commission.
+ * Note:
+ * -----
+ * profit_loss = S.P + S.P.T (buy)
+ * profit_loss = S.P - S.P.T (sell)
+ **********************************************************************/
+double calculate_amount_with_tax(double a_price, int a_shares, double a_tax, transaction_type_t a_transaction_type)
+{
+    if (a_transaction_type == BUY)
+        return a_shares * a_price * (1.0 - a_tax / 100.0);
+    else
+        return a_shares * a_price * (1.0 + a_tax / 100.0);
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
@@ -131,24 +147,6 @@ implementation
 uses
 Math;
 {%REGION 'Before trade'}
-{*******************************************************************************
-Calculates the amount (buy/sell) with tax included, but not the commission.
-Note:
------
-profit_loss = S.P + S.P.T (buy)
-profit_loss = S.P - S.P.T (sell)
-*******************************************************************************}
-function CalculateAmountWithTax(a_shares, a_price, a_tax: Double; a_transaction_type: TTransactionType): Double;
-begin
-if a_transaction_type = ttBuy then
-begin
-Result := a_shares * a_price * (1.0 - a_tax / 100.0);
-end
-else
-begin
-Result := a_shares * a_price * (1.0 + a_tax / 100.0);
-end;
-end;
 {*******************************************************************************
 Cost of transaction (tax and commission)
 *******************************************************************************}
