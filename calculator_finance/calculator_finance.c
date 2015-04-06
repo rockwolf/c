@@ -54,21 +54,15 @@ double calculate_stoploss(double a_price, int a_shares, double a_tax, double a_c
 {
     double l_numerator = 0.0;
     double l_denominator = 0.0;
-    printf("a_price = %.2f, a_shares = %d, a_tax = %.2f, a_commission = %.2f, a_risk = %.2f, a_pool = %.2f, a_is_long = %d\n",
-            a_price, a_shares, a_tax, a_commission, a_risk, a_pool, a_is_long);
     if (a_is_long == 1)
     {
         l_numerator = a_shares * a_price * (1.0 + a_tax / 100.0) - a_risk / 100.0 * a_pool + 2.0 * a_commission;
-        printf("-long- %.2f\n", l_numerator);
         l_denominator = a_shares * 1.0 - a_tax / 100.0;
-        printf("-long- %.2f\n", l_denominator);
     }
     else
     {
         l_numerator = a_risk / 100.0 * a_pool + a_shares * a_price * (1.0 - a_tax / 100.0) - 2.0 * a_commission;
-        printf("-short- %.2f\n", l_numerator);
         l_denominator = a_shares * 1.0 + a_tax / 100.0;
-        printf("-short- %.2f\n", l_denominator);
     }
     return l_numerator / l_denominator;
 }

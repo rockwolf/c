@@ -1,8 +1,11 @@
 /* See LICENSE.txt for license and copyright information. */
 
 #include <stdio.h>
+#include <math.h>
 #include "unit_test_trade.h"
 #include "calculator_finance.h"
+#include "const.h"
+#include "general_functions.h"
 #include "minunit.h"
 
 /// Helper functions
@@ -38,15 +41,13 @@ char* test_convert_to_orig()
 
 char* test_calculate_stoploss()
 {
-    //printf("%.2f\n", calculate_stoploss(12.0, 2, 3.0, 1.0, 2.0, 10000.0, 1));
-    //printf("%.2f\n", calculate_stoploss(12.0, 2, 3.0, 1.0, 2.0, 10000.0, 0));
     mu_assert(
             "[FAIL] -short- Wrong result for calculate_stoploss(12.0, 2, 3.0, 1.0, 2.0, 10000.0, 0)!",
-            calculate_stoploss(12.0, 2, 3.0, 1.0, 2.0, 10000.0, 0) == 6.0
+            equals(calculate_stoploss(12.0, 2, 3.0, 1.0, 2.0, 10000.0, 0), 109.004926, C_PRECISION)
     ); 
     mu_assert(
             "[FAIL] -long- Wrong result for calculate_stoploss(12.0, 2, 3.0, 1.0, 2.0, 10000.0, 1)!",
-            calculate_stoploss(12.0, 2, 3.0, 1.0, 2.0, 10000.0, 1) == 13.0
+            equals(calculate_stoploss(12.0, 2, 3.0, 1.0, 2.0, 10000.0, 1), -87.9593908629, C_PRECISION)
     ); 
     return 0;
 }
