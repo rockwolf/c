@@ -49,6 +49,15 @@ char* test_calculate_shares_recommended()
     return 0;
 }
 
+char* test_calculate_leveraged_contracts()
+{
+    mu_assert(
+        "[FAIL] Wrong result for calculate_leveraged_contracts(4)!",
+        calculate_leveraged_contracts(4) == 5
+    );
+    return 0;
+}
+
 char* test_calculate_stoploss()
 {
     mu_assert(
@@ -140,6 +149,7 @@ char* test_all_trade()
     mu_run_test(test_convert_from_orig);
     mu_run_test(test_convert_to_orig);
     mu_run_test(test_calculate_shares_recommended);
+    mu_run_test(test_calculate_leveraged_contracts);
     mu_run_test(test_calculate_stoploss);
     mu_run_test(test_calculate_risk_input);
     mu_run_test(test_calculate_risk_initial);
