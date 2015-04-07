@@ -9,6 +9,7 @@ double convert_to_orig(double a_converted_price, double a_exchange_rate);
 // Before trade
 
 int calculate_shares_recommended(double a_pool, double a_commission, double a_tax, double a_price);
+int calculate_leveraged_contracts(int a_n);
 double calculate_stoploss(double a_price, int a_shares, double a_tax, double a_commission, double a_risk, double a_pool, int a_is_long);
 double calculate_risk_input(double a_pool, double a_risk);
 double calculate_risk_initial(double a_price, int a_shares, double a_tax, double a_commission, double a_stoploss, int a_is_long);
