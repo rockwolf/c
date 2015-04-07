@@ -8,4 +8,5 @@ char* test_calculate_risk_input();
 char* test_calculate_amount();
 char* test_calculate_amount_with_tax_and_commission();
 char* test_calculate_amount_with_tax();
+char* test_cost_transaction();
 char* test_all_trade();
