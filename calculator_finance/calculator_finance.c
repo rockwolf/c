@@ -146,7 +146,7 @@ double calculate_amount_with_tax(double a_price, int a_shares, double a_tax, tra
  **********************************************************************/
 double cost_transaction(double a_price, int a_shares, double a_tax, double a_commission)
 {
-    return a_shares * a_price * a_tax + a_commission;
+    return a_price * a_shares * a_tax + a_commission;
 }
 
 /*const
