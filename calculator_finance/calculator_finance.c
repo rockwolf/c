@@ -140,6 +140,15 @@ double calculate_amount_with_tax(double a_price, int a_shares, double a_tax, tra
         return a_shares * a_price * (1.0 + a_tax / 100.0);
 }
 
+/**********************************************************************
+ * cost_transaction:
+ * Cost of transaction (tax and commission)
+ **********************************************************************/
+double cost_transaction(double a_price, int a_shares, double a_tax, double a_commission)
+{
+    return a_shares * a_price * a_tax + a_commission;
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
@@ -147,13 +156,7 @@ implementation
 uses
 Math;
 {%REGION 'Before trade'}
-{*******************************************************************************
-Cost of transaction (tax and commission)
-*******************************************************************************}
-function CostTransaction(a_price, a_shares, a_tax, a_commission: Double): Double;
-begin
-Result := a_shares * a_price * a_tax + a_commission;
-end;
+
 {*******************************************************************************
 Cost of tax (buy and sell)
 *******************************************************************************}
