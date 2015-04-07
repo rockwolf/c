@@ -139,6 +139,7 @@ char* test_all_trade()
     mu_run_test(test_calculate_percentage_of);
     mu_run_test(test_convert_from_orig);
     mu_run_test(test_convert_to_orig);
+    mu_run_test(test_calculate_shares_recommended);
     mu_run_test(test_calculate_stoploss);
     mu_run_test(test_calculate_risk_input);
     mu_run_test(test_calculate_risk_initial);
@@ -146,6 +147,5 @@ char* test_all_trade()
     mu_run_test(test_calculate_amount_with_tax_and_commission);
     mu_run_test(test_calculate_amount_with_tax);
     mu_run_test(test_cost_transaction);
-    mu_run_test(test_calculate_shares_recommended);
     return 0;
 }
