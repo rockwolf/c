@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
 #include "types.h"
 #include "calculator_finance.h"
 
@@ -48,6 +49,16 @@ int calculate_shares_recommended(double a_pool, double a_commission, double a_ta
        // to buy a contract too much. So this truncation provides extra safety and is
        // indeed what we want.
        return (int)((a_pool - (a_tax / 100.0 * a_pool) - a_commission) / a_price);
+}
+
+/**********************************************************************
+ * calculate_leveraged_contracts:
+ * Calculates the number of contracts to buy, according to an algorithm
+ * that determines an ideal amount of leverage.
+ **********************************************************************/
+int calculate_leveraged_contracts(int a_n)
+{
+    return ceil(a_n / 3.0) - 1 + a_n;
 }
 
 /**********************************************************************
@@ -183,13 +194,7 @@ begin
 Result := a_amount - a_shares * a_price - a_commission;
 end;
 end;
-{*******************************************************************************
-Calculates the recommended amount of shares you can buy.
-*******************************************************************************}
-function CalculateSharesRecommended(a_pool, a_commission, a_tax, a_price: Double): Double;
-begin
-Result := (a_pool - (a_tax / 100.0 * a_pool) - a_commission) / a_price;
-end;
+
 {*******************************************************************************
 Calculates the price when buying or selling.
 *******************************************************************************}
@@ -209,14 +214,7 @@ l_denominator := (1.0 - a_tax / 100.0) * a_shares;
 end;
 Result := l_numerator / l_denominator;
 end;
-{*******************************************************************************
-Calculates the number of contracts to buy, according to an algorithm
-that determines an ideal amount of leverage.
-*******************************************************************************}
-function CalculateLeveragedContracts(a_n: Integer): Integer;
-begin
-Result := Ceil(a_n / 3.0) - 1 + a_n;
-end;
+
 {%ENDREGION}
 {%REGION 'After trade'}
 {*******************************************************************************
