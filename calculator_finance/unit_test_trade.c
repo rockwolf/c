@@ -40,6 +40,15 @@ char* test_convert_to_orig()
 
 // Before trade
 
+char* test_calculate_shares_recommended()
+{
+    mu_assert(
+        "[FAIL] Wrong result for calculate_shares_recommended(10000.0, 1.0, 3.0, 12.0)!",
+        calculate_shares_recommended(10000.0, 1.0, 3.0, 12.0) == 808
+    ); 
+    return 0;
+}
+
 char* test_calculate_stoploss()
 {
     mu_assert(
@@ -137,5 +146,6 @@ char* test_all_trade()
     mu_run_test(test_calculate_amount_with_tax_and_commission);
     mu_run_test(test_calculate_amount_with_tax);
     mu_run_test(test_cost_transaction);
+    mu_run_test(test_calculate_shares_recommended);
     return 0;
 }
