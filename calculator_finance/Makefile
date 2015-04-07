@@ -6,7 +6,7 @@ DEPS = main.h const.h calculator_finance.h unit_test.h unit_test_trade.h general
 OBJ = main.o calculator_finance.o unit_test.o unit_test_trade.o general_functions.o
 
 calculator_finance: $(OBJ)
-	$(CC) $(CFLAGS) -o $(.TARGET) $(.ALLSRC)
+	$(CC) $(CFLAGS) -o $(.TARGET) $(.ALLSRC) -lm
 
 $(OBJ): $(.PREFIX).c $(DEPS)
 	$(CC) $(CFLAGS) -c $(.PREFIX).c
