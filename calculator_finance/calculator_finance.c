@@ -39,6 +39,18 @@ double convert_to_orig(double a_converted_price, double a_exchange_rate)
 // Before trade
 
 /**********************************************************************
+ * calculate_shares_recommended:
+ * Calculates the recommended amount of shares you can buy.
+ **********************************************************************/
+int calculate_shares_recommended(double a_pool, double a_commission, double a_tax, double a_price)
+{
+       // Note: The int typecast performs truncation. It's better to buy a contract less, than
+       // to buy a contract too much. So this truncation provides extra safety and is
+       // indeed what we want.
+       return (int)((a_pool - (a_tax / 100.0 * a_pool) - a_commission) / a_price);
+}
+
+/**********************************************************************
  * calculate_stoploss:
  * Calculates the stoploss.
  * Note:
