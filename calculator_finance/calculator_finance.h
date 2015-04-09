@@ -17,3 +17,4 @@ double calculate_amount(double a_price, int a_shares);
 double calculate_amount_with_tax_and_commission(double a_price, int a_shares, double a_tax, double a_commission, transaction_type_t a_transaction_type);
 double calculate_amount_with_tax(double a_price, int a_shares, double a_tax, transaction_type_t a_transaction_type);
 double cost_transaction(double a_price, int a_shares, double a_tax, double a_commission);
+double cost_tax(double a_amount, double a_commission, int a_shares, double a_price, transaction_type_t a_transaction_type);
