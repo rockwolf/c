@@ -172,6 +172,18 @@ double cost_transaction(double a_price, int a_shares, double a_tax, double a_com
     return a_price * a_shares * a_tax / 100.0 + a_commission;
 }
 
+/**********************************************************************
+ * cost_tax:
+ * Cost of tax (buy and sell)
+ **********************************************************************/
+double cost_tax(double a_amount, double a_commission, int a_shares, double a_price, transaction_type_t a_transaction_type)
+{
+  if (a_transaction_type == SELL)
+    return - a_amount - a_commission + a_shares * a_price;
+  else
+    return a_amount - a_shares * a_price - a_commission;
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
@@ -180,20 +192,6 @@ uses
 Math;
 {%REGION 'Before trade'}
 
-{*******************************************************************************
-Cost of tax (buy and sell)
-*******************************************************************************}
-function CostTax(a_amount, a_commission, a_shares, a_price: Double; a_transaction_type: TTransactionType): Double;
-begin
-if a_transaction_type = ttSell then
-begin
-Result := - a_amount - a_commission + a_shares * a_price;
-end
-else
-begin
-Result := a_amount - a_shares * a_price - a_commission;
-end;
-end;
 
 {*******************************************************************************
 Calculates the price when buying or selling.
