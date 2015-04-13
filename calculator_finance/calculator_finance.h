@@ -22,6 +22,6 @@ double calculate_price(double a_amount, int a_shares, double a_tax, double a_com
 
 // After trade
 
-double calculate_risk_actual(double_a_price_buy, int a_shares_buy, double a_tax_buy,
+double calculate_risk_actual(double a_price_buy, int a_shares_buy, double a_tax_buy,
     double a_commission_buy, double a_price_sell, int a_shares_sell, double a_tax_sell,
     double a_commission_sell, double a_risk_initial, double a_profit_loss);

@@ -195,13 +195,13 @@ double calculate_price(double a_amount, int a_shares, double a_tax, double a_com
     
     if (a_transaction_type == BUY)
     {
-        l_numerator := a_amount - a_commission;
-        l_denominator := (1.0 + a_tax / 100.0) * a_shares;
+        l_numerator = a_amount - a_commission;
+        l_denominator = (1.0 + a_tax / 100.0) * a_shares;
     }
     else
     {
-        l_numerator := a_amount + a_commission;
-        l_denominator := (1.0 - a_tax / 100.0) * a_shares;
+        l_numerator = a_amount + a_commission;
+        l_denominator = (1.0 - a_tax / 100.0) * a_shares;
     }
     return l_numerator / l_denominator;
 }
@@ -218,11 +218,11 @@ double calculate_price(double a_amount, int a_shares, double a_tax, double a_com
  * -----
  * It's the same for long and short.
  **********************************************************************/
-double calculate_risk_actual(double_a_price_buy, int a_shares_buy, double a_tax_buy,
+double calculate_risk_actual(double a_price_buy, int a_shares_buy, double a_tax_buy,
     double a_commission_buy, double a_price_sell, int a_shares_sell, double a_tax_sell,
     double a_commission_sell, double a_risk_initial, double a_profit_loss)
 {
-    if ((a_profit_loss < 0.0) and (abs(a_profit_loss) < a_risk_initial)) or (a_profit_loss >= 0.0) then
+    if (((a_profit_loss < 0.0) && (fabs(a_profit_loss) < a_risk_initial)) || (a_profit_loss >= 0.0))
         return a_risk_initial;
     else
         return a_shares_buy * a_price_buy * (1.0 + a_tax_buy / 100.0) - a_shares_sell * a_price_sell * (1.0 - a_tax_sell / 100.0) + a_commission_buy + a_commission_sell;
