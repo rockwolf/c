@@ -184,6 +184,27 @@ double cost_tax(double a_amount, double a_commission, int a_shares, double a_pri
     return a_amount - a_shares * a_price - a_commission;
 }
 
+/**********************************************************************
+ * calculate_price:
+ * Calculates the price when buying or selling.
+ **********************************************************************/
+double calculate_price(double a_amount, int a_shares, double a_tax, double a_commission, transaction_type_t a_transaction_type)
+{
+    double l_numerator, l_denominator;
+    
+    if (a_transaction_type == BUY)
+    {
+        l_numerator := a_amount - a_commission;
+        l_denominator := (1.0 + a_tax / 100.0) * a_shares;
+    }
+    else
+    {
+        l_numerator := a_amount + a_commission;
+        l_denominator := (1.0 - a_tax / 100.0) * a_shares;
+    }
+    return l_numerator / l_denominator;
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
@@ -191,27 +212,6 @@ implementation
 uses
 Math;
 {%REGION 'Before trade'}
-
-
-{*******************************************************************************
-Calculates the price when buying or selling.
-*******************************************************************************}
-function CalculatePrice(a_amount, a_shares, a_tax, a_commission: Double; a_transaction_type: TTransactionType): Double;
-var
-l_numerator, var_N: Double;
-begin
-if a_transaction_type = ttBuy then
-begin
-l_numerator := a_amount - a_commission;
-l_denominator := (1.0 + a_tax / 100.0) * a_shares;
-end
-else
-begin
-l_numerator := a_amount + a_commission;
-l_denominator := (1.0 - a_tax / 100.0) * a_shares;
-end;
-Result := l_numerator / l_denominator;
-end;
 
 {%ENDREGION}
 {%REGION 'After trade'}
