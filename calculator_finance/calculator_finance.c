@@ -190,7 +190,8 @@ double cost_tax(double a_amount, double a_commission, int a_shares, double a_pri
  **********************************************************************/
 double calculate_price(double a_amount, int a_shares, double a_tax, double a_commission, transaction_type_t a_transaction_type)
 {
-    double l_numerator, l_denominator;
+    double l_numerator = 0.0;
+    double l_denominator = 0.0;
     
     if (a_transaction_type == BUY)
     {
@@ -205,6 +206,28 @@ double calculate_price(double a_amount, int a_shares, double a_tax, double a_com
     return l_numerator / l_denominator;
 }
 
+// After trade
+
+/**********************************************************************
+ * calculate_risk_actual:
+ * Calculates the risk we actually took,
+ * based on the data in TABLE_TRADE.
+ * Note:
+ * risk_actual = S.Pb + S.Pb.T + Cb - (S.Ps - S.Ps.T - Cs)
+ * Note:
+ * -----
+ * It's the same for long and short.
+ **********************************************************************/
+double calculate_risk_actual(double_a_price_buy, int a_shares_buy, double a_tax_buy,
+    double a_commission_buy, double a_price_sell, int a_shares_sell, double a_tax_sell,
+    double a_commission_sell, double a_risk_initial, double a_profit_loss)
+{
+    if ((a_profit_loss < 0.0) and (abs(a_profit_loss) < a_risk_initial)) or (a_profit_loss >= 0.0) then
+        return a_risk_initial;
+    else
+        return a_shares_buy * a_price_buy * (1.0 + a_tax_buy / 100.0) - a_shares_sell * a_price_sell * (1.0 - a_tax_sell / 100.0) + a_commission_buy + a_commission_sell;
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
@@ -215,29 +238,7 @@ Math;
 
 {%ENDREGION}
 {%REGION 'After trade'}
-{*******************************************************************************
-Calculates the risk we actually took,
-based on the data in TABLE_TRADE.
-Note:
-risk_actual = S.Pb + S.Pb.T + Cb - (S.Ps - S.Ps.T - Cs)
-Note:
------
-It's the same for long and short.
-*******************************************************************************}
-function CalculateRiskActual(a_price_buy, a_shares_buy, a_tax_buy, a_commission_buy,
-a_price_sell, a_shares_sell, a_tax_sell, a_commission_sell,
-a_risk_initial, a_profit_loss: Double): Double;
-begin
-// TODO: DEFAULT_DECIMAL + abs?
-if ((a_profit_loss < 0.0) and (abs(a_profit_loss) < a_risk_initial)) or (a_profit_loss >= 0.0) then
-begin
-Result := a_risk_initial;
-end
-else
-begin
-Result := a_shares_buy * a_price_buy * (1.0 + a_tax_buy / 100.0) - a_shares_sell * a_price_sell * (1.0 - a_tax_sell / 100.0) + a_commission_buy + a_commission_sell;
-end;
-end;
+
 {*******************************************************************************
 Function to calculate R-multiple.
 *******************************************************************************}
