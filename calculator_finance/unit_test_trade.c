@@ -147,15 +147,14 @@ char* test_cost_tax()
 {
     transaction_type_t a_transaction_type_t;
     a_transaction_type_t = BUY;
-    // TODO: do the correct parameter calls below.
     mu_assert(
-        "[FAIL] -buy- Wrong result for cost_tax(12.0, 2, 3.0, BUY)!",
-        equals(cost_tax(12.0, 2, 3.0, a_transaction_type_t), 23.28, C_PRECISION)
+        "[FAIL] -buy- Wrong result for cost_tax(5000.0, 1.0, 2, 12.0, BUY)!",
+        equals(cost_tax(25.75, 1.0, 2, 12.0, a_transaction_type_t), 0.75, C_PRECISION)
     ); 
     a_transaction_type_t = SELL;
     mu_assert(
-            "[FAIL] -sell- Wrong result for cost_tax(12.0, 2, 3.0, SELL)!",
-            equals(cost_tax(12.0, 2, 3.0, a_transaction_type_t), 24.72, C_PRECISION)
+            "[FAIL] -sell- Wrong result for cost_tax(5000.0, 1.0, 2, 12.0, SELL)!",
+            equals(cost_tax(22.25, 1.0, 2, 12.0, a_transaction_type_t), 0.75, C_PRECISION)
     ); 
     return 0;
 }
