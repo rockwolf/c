@@ -228,6 +228,15 @@ double calculate_risk_actual(double a_price_buy, int a_shares_buy, double a_tax_
         return a_shares_buy * a_price_buy * (1.0 + a_tax_buy / 100.0) - a_shares_sell * a_price_sell * (1.0 - a_tax_sell / 100.0) + a_commission_buy + a_commission_sell;
 }
 
+/**********************************************************************
+ * calculate_r_multiple:
+ * Function to calculate R-multiple.
+ **********************************************************************/
+double calculate_r_multiple(double a_profit_loss, double a_risk_initial)
+{
+    return a_profit_loss / a_risk_initial;
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
