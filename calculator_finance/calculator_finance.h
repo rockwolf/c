@@ -28,3 +28,7 @@ double calculate_risk_actual(double a_price_buy, int a_shares_buy, double a_tax_
 double calculate_r_multiple(double a_profit_loss, double a_risk_initial);
 double calculate_cost_total(double a_amount_buy, double a_tax_buy, double a_commission_buy,
     double a_amount_sell, double a_tax_sell, double a_commission_sell);
+double calculate_profit_loss(double a_price_buy, int a_shares_buy, double a_price_sell, int a_shares_sell);
+double calculate_profit_loss_total(double a_price_buy, int a_shares_buy, double a_tax_buy, double a_commission_buy,
+    double a_price_sell, int a_shares_sell, double a_tax_sell, double a_commission_sell);
+double calculate_cost_other(double a_cost_total, double a_profit_loss);
