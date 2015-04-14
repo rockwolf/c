@@ -153,17 +153,75 @@ char* test_cost_tax()
     ); 
     a_transaction_type_t = SELL;
     mu_assert(
-            "[FAIL] -sell- Wrong result for cost_tax(5000.0, 1.0, 2, 12.0, SELL)!",
-            equals(cost_tax(22.25, 1.0, 2, 12.0, a_transaction_type_t), 0.75, C_PRECISION)
+        "[FAIL] -sell- Wrong result for cost_tax(5000.0, 1.0, 2, 12.0, SELL)!",
+        equals(cost_tax(22.25, 1.0, 2, 12.0, a_transaction_type_t), 0.75, C_PRECISION)
     ); 
+    return 0;
+}
+
+char* test_calculate_price()
+{
+    mu_assert(
+        "TBD",
+        0
+    );
+    return 0;
+}
+
+// After trade
+
+char* test_calculate_risk_actual()
+{
+    mu_assert(
+        "TBD",
+        0
+    );
+    return 0;
+}
+
+char* test_calculate_r_multiple()
+{
+    mu_assert(
+        "TBD",
+        0
+    );
+    return 0;
+}
+
+char* test_calculate_cost_total()
+{
+    mu_assert(
+        "TBD",
+        0
+    );
+    return 0;
+}
+
+char* test_calculate_profit_loss()
+{
+    mu_assert(
+        "TBD",
+        0
+    );
+    return 0;
+}
+
+char* test_calculate_profit_loss_total()
+{
+    mu_assert(
+        "TBD",
+        0
+    );
     return 0;
 }
 
 char* test_all_trade()
 {
+    // Helper functions
     mu_run_test(test_calculate_percentage_of);
     mu_run_test(test_convert_from_orig);
     mu_run_test(test_convert_to_orig);
+    // Before trade
     mu_run_test(test_calculate_shares_recommended);
     mu_run_test(test_calculate_leveraged_contracts);
     mu_run_test(test_calculate_stoploss);
@@ -174,5 +232,12 @@ char* test_all_trade()
     mu_run_test(test_calculate_amount_with_tax);
     mu_run_test(test_cost_transaction);
     mu_run_test(test_cost_tax);
+    mu_run_test(test_calculate_price);
+    // After trade
+    mu_run_test(test_calculate_risk_actual);
+    mu_run_test(test_calculate_r_multiple);
+    mu_run_test(test_calculate_cost_total);
+    mu_run_test(test_calculate_profit_loss);
+    mu_run_test(test_calculate_profit_loss_total);
     return 0;
 }
