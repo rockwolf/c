@@ -237,6 +237,16 @@ double calculate_r_multiple(double a_profit_loss, double a_risk_initial)
     return a_profit_loss / a_risk_initial;
 }
 
+/**********************************************************************
+ * calculate_cost_total:
+ * Function to calculate the total cost associated with the given trade.
+ **********************************************************************/
+double calculate_cost_total(double a_amount_buy, double a_tax_buy, double a_commission_buy,
+    double a_amount_sell, double a_tax_sell, double a_commission_sell)
+{
+    return a_tax_buy / 100.0 * a_amount_buy + a_commission_buy + a_tax_sell / 100.0 * a_amount_sell + a_commission_sell;
+}
+
 /*const
 C_BINB00 = 'BINB00';
 C_WHSI00 = 'WHSI00';
@@ -248,21 +258,6 @@ Math;
 {%ENDREGION}
 {%REGION 'After trade'}
 
-{*******************************************************************************
-Function to calculate R-multiple.
-*******************************************************************************}
-function CalculateRMultiple(a_profit_loss, a_risk_initial: Double): Double;
-begin
-Result := a_profit_loss / a_risk_initial;
-end;
-{*******************************************************************************
-Function to calculate the total cost associated with the given trade.
-*******************************************************************************}
-function CalculateCostTotal(a_tax_buy, a_commission_buy, a_tax_sell, a_commission_sell: Double): Double;
-begin
-//TODO: fix this: tax * amount_buy_simple !
-Result := a_tax_buy / 100.0 + a_commission_buy + a_tax_sell / 100.0 + a_commission_sell;
-end;
 {*******************************************************************************
 Calculates the profit_loss, without taking tax and commission into account.
 Note:
