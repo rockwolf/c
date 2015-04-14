@@ -247,53 +247,43 @@ double calculate_cost_total(double a_amount_buy, double a_tax_buy, double a_comm
     return a_tax_buy / 100.0 * a_amount_buy + a_commission_buy + a_tax_sell / 100.0 * a_amount_sell + a_commission_sell;
 }
 
-/*const
-C_BINB00 = 'BINB00';
-C_WHSI00 = 'WHSI00';
-implementation
-uses
-Math;
-{%REGION 'Before trade'}
+/**********************************************************************
+ * calculate_profit_loss:
+ * Calculates the profit_loss, without taking tax and commission into account.
+ * Note:
+ * -----
+ * profit_loss = S.Ps - S.Pb
+ * => it's the same for long and short
+ **********************************************************************/
+double calculate_profit_loss(double a_price_buy, int a_shares_buy, double a_price_sell, int a_shares_sell)
+{
+    return a_shares_sell * a_price_sell - a_shares_buy * a_price_buy;
+}
 
-{%ENDREGION}
-{%REGION 'After trade'}
+/**********************************************************************
+ * calculate_profit_loss_total:
+ * Calculates the total profit_loss.
+ * Note:
+ * -----
+ * profit_loss = S.Ps - S.Ps.T - C - (S.Pb + S.Pb.T + C)
+ * => it's the same for long and short
+ **********************************************************************/
+double calculate_profit_loss_total(double a_price_buy, int a_shares_buy, double a_tax_buy, double a_commission_buy,
+    double a_price_sell, int a_shares_sell, double a_tax_sell, double a_commission_sell)
+{
+    return a_shares_sell * a_price_sell * (1.0 - a_tax_sell / 100.0) - a_shares_buy * a_price_buy * (1.0 - a_tax_buy / 100.0) - (a_commission_buy + a_commission_sell);
+}
 
-{*******************************************************************************
-Calculates the profit_loss, without taking tax and commission into account.
-Note:
------
-profit_loss = S.Ps - S.Pb
-=> it's the same for long and short
-*******************************************************************************}
-function CalculateProfitLoss(a_price_buy, a_shares_buy, a_price_sell, a_shares_sell: Double): Double;
-begin
-Result := a_shares_sell * a_price_sell - a_shares_buy * a_price_buy;
-end;
-{*******************************************************************************
-Calculates the total profit_loss.
-Note:
------
-profit_loss = S.Ps - S.Ps.T - C - (S.Pb + S.Pb.T + C)
-=> it's the same for long and short
-*******************************************************************************}
-function CalculateProfitLossTotal(a_price_buy, a_shares_buy, a_price_sell, a_shares_sell, a_tax_buy, a_tax_sell, a_commission_buy, a_commission_sell: Double): Double;
-begin
-Result := a_shares_sell * a_price_sell * (1.0 - a_tax_sell / 100.0) - a_shares_buy * a_price_buy * (1.0 - a_tax_buy / 100.0) - (a_commission_buy + a_commission_sell);
-end;
-{*******************************************************************************
-Calculates other costs based on the difference that remains.
-*******************************************************************************}
-function CalculateCostOther(a_cost_total, a_profit_loss: Double): Double;
-var
-l_diff_cost_profit: Double;
-begin
-l_diff_cost_profit := a_cost_total - a_profit_loss;
-if l_diff_cost_profit > 0.0 then
-begin
-Result := l_diff_cost_profit;
-end
-else
-begin
-Result := 0.0;
-end;
-end;*/
+/**********************************************************************
+ * calculate_cost_other:
+ * Calculates other costs based on the difference that remains.
+**********************************************************************/
+double calculate_cost_other(double a_cost_total, double a_profit_loss)
+{
+    double l_diff_cost_profit = 0.0;
+    l_diff_cost_profit = a_cost_total - a_profit_loss;
+    if (l_diff_cost_profit > 0.0)
+        return l_diff_cost_profit;
+    else
+      return 0.0;
+}
