@@ -21,5 +21,6 @@ char* test_calculate_r_multiple();
 char* test_calculate_cost_total();
 char* test_calculate_profit_loss();
 char* test_calculate_profit_loss_total();
+char* test_calculate_cost_other();
 
 char* test_all_trade();
