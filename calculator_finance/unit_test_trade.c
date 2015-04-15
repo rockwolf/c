@@ -165,12 +165,12 @@ char* test_calculate_price()
     a_transaction_type_t = BUY;
     mu_assert(
         "[FAIL] -buy- Wrong result for calculate_price(24.0, 2, 3.0, 1.0, BUY)!",
-        equals(calculate_price(24.0, 2, 3.0, 1.0, a_transaction_type_t), 11.16504854, C_PRECISION)
+        equals(calculate_price(24.0, 2, 3.0, 1.0, a_transaction_type_t), 11.165049, C_PRECISION)
     ); 
     a_transaction_type_t = SELL;
     mu_assert(
         "[FAIL] -sell- Wrong result for calculate_price(24.0, 2, 3.0, 1.0, SELL)!",
-        equals(calculate_price(22.25, 1.0, 2, 12.0, a_transaction_type_t), 12.8865979, C_PRECISION)
+        equals(calculate_price(24.0, 2, 3.0, 1.0, a_transaction_type_t), 12.886598, C_PRECISION)
     ); 
     return 0;
 }
