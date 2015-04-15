@@ -207,18 +207,18 @@ char* test_calculate_cost_total()
 char* test_calculate_profit_loss()
 {
     mu_assert(
-        "TBD",
-        0
-    );
+        "[FAIL] Wrong result for calculate_profit_loss(12.0, 2, 24.0, 2)!",
+        calculate_profit_loss(12.0, 2, 24.0, 2) == 24.0
+    ); 
     return 0;
 }
 
 char* test_calculate_profit_loss_total()
 {
     mu_assert(
-        "TBD",
-        0
-    );
+        "[FAIL] Wrong result for calculate_profit_loss_total(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0)!",
+        calculate_profit_loss_total(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0) == 21.28
+    ); 
     return 0;
 }
 
