@@ -180,7 +180,7 @@ char* test_calculate_price()
 char* test_calculate_risk_actual()
 {
     mu_assert(
-        "TBD",
+       "TBD",
         0
     );
     return 0;
@@ -189,8 +189,8 @@ char* test_calculate_risk_actual()
 char* test_calculate_r_multiple()
 {
     mu_assert(
-        "TBD",
-        0
+        "[FAIL] Wrong result for calculate_r_multiple(-100.0, 200.0)!",
+        equals(calculate_r_multiple(-100.0, 200.0), -0.5, C_PRECISION)
     );
     return 0;
 }
