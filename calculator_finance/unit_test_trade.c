@@ -222,6 +222,15 @@ char* test_calculate_profit_loss_total()
     return 0;
 }
 
+char* test_calculate_cost_other()
+{
+    mu_assert(
+        "TBD",
+        0
+    );
+    return 0;
+}
+
 char* test_all_trade()
 {
     // Helper functions
@@ -246,5 +255,6 @@ char* test_all_trade()
     mu_run_test(test_calculate_cost_total);
     mu_run_test(test_calculate_profit_loss);
     mu_run_test(test_calculate_profit_loss_total);
+    mu_run_test(test_calculate_cost_other);
     return 0;
 }
