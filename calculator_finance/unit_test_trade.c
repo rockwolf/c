@@ -179,9 +179,14 @@ char* test_calculate_price()
 
 char* test_calculate_risk_actual()
 {
+    // TODO: use values from the ods to test these functions
     mu_assert(
-       "TBD",
-        0
+       "[FAIL] -minimum risk- Wrong result for calculate_risk_actual(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0, risk_initial, profit_loss)!",
+        equals(calculate_risk_actual(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0, risk_initial, profit_loss), 12.886598, C_PRECISION)
+    );
+    mu_assert(
+       "[FAIL] -bigger risk- Wrong result for calculate_risk_actual(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0, risk_initial, profit_loss)!",
+        equals(calculate_risk_actual(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0, risk_initial, profit_loss), 12.886598, C_PRECISION)
     );
     return 0;
 }
