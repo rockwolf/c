@@ -22,10 +22,12 @@ int main(int argc, char *argv[])
         exit(1);
     }
     
-    srand(time(NULL)); //randomize the seed
+    srand((unsigned int)time(NULL)); //randomize the seed
     for(i = 0; i < NUM;)
     {
-        int r = rand_lim(RAND_LIMIT);
+        int r = rand_lim(RAND_LIMIT); // first number is always 25?
+        r = rand_lim(RAND_LIMIT); // call rand_lim a second time to make
+                                  // sure all numbers are random 
         if(number_is_taken(r, numbers) == 0)
         {
             numbers[i] = r;
