@@ -203,8 +203,8 @@ char* test_calculate_r_multiple()
 char* test_calculate_cost_total()
 {
     mu_assert(
-        "TBD",
-        0
+        "[FAIL] Wrong result for calculate_cost_total(100.0, 3.0, 1.0, 50.0, 3.0, 1.0)!",
+        equals(calculate_cost_total(100.0, 3.0, 1.0, 50.0, 3.0, 1.0), 6.5, C_PRECISION)
     );
     return 0;
 }
