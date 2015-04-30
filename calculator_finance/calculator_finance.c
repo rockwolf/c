@@ -278,10 +278,10 @@ double calculate_profit_loss_total(double a_price_buy, int a_shares_buy, double 
  * calculate_cost_other:
  * Calculates other costs based on the difference that remains.
  **********************************************************************/
-double calculate_cost_other(double a_cost_total, double a_profit_loss)
+double calculate_cost_other(double a_profit_loss, double profit_loss_total, double a_cost_total)
 {
     double l_diff_cost_profit = 0.0;
-    l_diff_cost_profit = a_cost_total - a_profit_loss;
+    l_diff_cost_profit = a_profit_loss - a_profit_loss_total - a_cost_total;
     if (l_diff_cost_profit > 0.0)
         return l_diff_cost_profit;
     else
