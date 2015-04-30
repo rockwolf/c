@@ -10,7 +10,7 @@
 
 CC = cc
 CFLAGS = -g -O2 -W -Wall -Werror -Wextra
-DEPS = main.h calculator_finance.h
+DEPS = main.h calculator_finance.h types.h
 OBJ = main.o calculator_finance.o
 
 $(OBJ): $(.PREFIX).c $(DEPS)
