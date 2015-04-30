@@ -230,8 +230,20 @@ char* test_calculate_profit_loss_total()
 char* test_calculate_cost_other()
 {
     mu_assert(
-        "TBD",
-        0
+        "[FAIL] -positive, no other cost- Wrong result for calculate_cost_other(12.0, 8.92, 3.08)!",
+        equals(calculate_cost_other(12.0, 8.92, 3.08), 0.0, C_PRECISION)
+    ); 
+    mu_assert(
+        "[FAIL] -negative, no other cost- Wrong result for calculate_cost_other(12.0, 8.92, 3.08)!",
+        equals(calculate_cost_other(-12.0, -8.92, -3.08), 0.0, C_PRECISION)
+    );
+    mu_assert(
+        "[FAIL] -positive, 1.5 EUR other cost- Wrong result for calculate_cost_other(12.0, 8.92, 3.08)!",
+        equals(calculate_cost_other(12.0, 8.92, 4.58), 1.5, C_PRECISION)
+    ); 
+    mu_assert(
+        "[FAIL] -negative, 1.5 EUR other cost- Wrong result for calculate_cost_other(12.0, 8.92, 3.08)!",
+        equals(calculate_cost_other(-12.0, -8.92, -4.58), -1.5, C_PRECISION)
     );
     return 0;
 }
