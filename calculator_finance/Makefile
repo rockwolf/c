@@ -1,5 +1,13 @@
 # Makefile
 
+# Usage:
+#
+# make calculator_finance
+# As root: make install
+# make clean
+# To remove:
+# As root: make uninstall
+
 CC = cc
 CFLAGS = -g -O2 -W -Wall -Werror -Wextra
 DEPS = main.h const.h calculator_finance.h unit_test.h unit_test_trade.h general_functions.h minunit.h
@@ -11,6 +19,13 @@ $(OBJ): $(.PREFIX).c $(DEPS)
 calculator_finance: $(OBJ)
 	$(CC) $(CFLAGS) -shared -o $(.TARGET).so $(.ALLSRC) -lm
 
+install:
+	cp -v calculator_finance.so /usr/local/lib/
+	chmod 755 /usr/local/lib/calculator_finance.so
+	
+uninstall:
+	rm -v /usr/local/lib/calculator_finance.so
+	
 .PHONY: clean
 
 clean:
