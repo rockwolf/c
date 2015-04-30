@@ -1,5 +1,4 @@
 # Makefile
-# TODO: remove the unneeded stuff + add -l option to use the shared library.
 CC = cc
 CFLAGS = -g -O2 -W -Wall -Werror -Wextra -lcalculator_finance
 DEPS = main.h const.h unit_test.h unit_test_trade.h general_functions.h minunit.h
