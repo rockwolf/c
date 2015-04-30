@@ -1,7 +1,7 @@
 # Makefile
 
 # Usage:
-#
+# ------
 # make calculator_finance
 # As root: make install
 # make clean
@@ -10,8 +10,8 @@
 
 CC = cc
 CFLAGS = -g -O2 -W -Wall -Werror -Wextra
-DEPS = main.h const.h calculator_finance.h unit_test.h unit_test_trade.h general_functions.h minunit.h
-OBJ = main.o calculator_finance.o unit_test.o unit_test_trade.o general_functions.o
+DEPS = main.h calculator_finance.h
+OBJ = main.o calculator_finance.o
 
 $(OBJ): $(.PREFIX).c $(DEPS)
 	$(CC) $(CFLAGS) -c -fpic $(.PREFIX).c
