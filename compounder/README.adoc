@@ -1,0 +1,13 @@
+= compounder
+
+Calculations with gnuplot visualisation, based on the compound interest formulae.
+More info could be found e.g. here:
+https://home.ubalt.edu/ntsbarsh/business-stat/otherapplets/CompoundCal.htm
+
+But the main formula (with addition of capital) is:
+FV = PV(1 + i) ^ n + [ R ( (1 + i) ^ n - 1 ) ] / i 
+
+FV: future value
+PV: principal value
+i: interest (e.g. 0.05 for 5 percent)
+R: added capital
