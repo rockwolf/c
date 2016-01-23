@@ -11,6 +11,20 @@
 
 // Helper functions
 
+char* test_calculate_average_price()
+{
+    SharesPrice l_struct1, l_struct2;
+    l_struct1.sp_shares = 415;
+    l_struct1.sp_price = 23.65;
+    l_struct2.sp_shares = 138;
+    l_struct2.sp_price = 16.50;
+    mu_assert(
+        "[FAIL] Wrong result for calculate_average_price(2, l_struct1, l_struct2)!",
+        equals(calculate_average_price(2, l_struct1, l_struct2), 21.8657, C_PRECISION)
+    ); 
+    return 0;
+};
+
 char* test_calculate_percentage_of()
 {
     mu_assert(
@@ -251,6 +265,7 @@ char* test_calculate_cost_other()
 char* test_all_trade()
 {
     // Helper functions
+    mu_run_test(test_calculate_average_price);
     mu_run_test(test_calculate_percentage_of);
     mu_run_test(test_convert_from_orig);
     mu_run_test(test_convert_to_orig);

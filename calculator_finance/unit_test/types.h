@@ -4,5 +4,10 @@
 
 // Enum
 typedef enum {BUY, SELL} transaction_type_t;
+typedef struct
+{
+    int sp_shares;
+    double sp_price;
+} SharesPrice;
 
 #endif  // types_h__

@@ -3,10 +3,55 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
+#include <stdarg.h>
 #include "types.h"
 #include "calculator_finance.h"
 
 // Helper functions
+
+typedef struct
+{
+    int sp_shares;
+    double sp_price;
+} SharesPrice;
+
+/**********************************************************************
+ * calculate_average_price:
+ * Calculate the average price, based on previous transactions.
+ * It requires a SharesPrice struct list, preceded by the total number
+ * of records.
+ * Note:
+ * -----
+ * S1 = 415, P1 = 23.65, S2 = 138, P2 = 16.50
+ * When you need to buy new stocks and you need to log this for
+ * accounting purposes, you need to know what the average price was
+ * that you paid. You only know the total number of shares you have,
+ * called S3. The price is the average of all prices you paid on buy/
+ * sell of all previous transactions.
+ * S1 * P1 + S2 * P2 = S3 * P3
+ * => P3 = (S1 * P1 + S2 * P2) / (S1 + S2)
+ * => P3 = (415 * 23.65 + 138 * 16.50) / 553
+ * => P3 = 21.8657
+ **********************************************************************/
+double calculate_average_price(int a_nargs, SharesPrice a_shares_price, ...)
+{
+    register int l_i;
+    va_list l_ap;
+    SharesPrice l_current;
+    double l_denominator, l_numerator;
+
+    va_start(l_ap, a_shares_price);
+    l_denominator = 0.0;
+    l_numerator = 0.0;
+    for (l_i = 1; l_i <= a_nargs; l_i++)
+    {
+         l_current = va_arg(l_ap, SharesPrice);
+         l_denominator += l_current.sp_shares * l_current.sp_price;
+         l_numerator += l_current.sp_shares;
+    }
+    va_end(l_ap);
+    return (double)(l_denominator / l_numerator);
+};
 
 /**********************************************************************
  * calculate_percentage_of:
@@ -14,7 +59,7 @@
  **********************************************************************/
 double calculate_percentage_of(double a_value, double a_from_value)
 {
-  return (a_value / a_from_value * 100.0);
+    return (a_value / a_from_value * 100.0);
 };
 
 /**********************************************************************

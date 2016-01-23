@@ -1,9 +1,9 @@
 /* See LICENSE.txt for license and copyright information. */
-#ifndef calculator_finance_h__
-#define calculator_finance_h__
+#pragma once
 
 // Helper functions
 
+extern double calculate_average_price(int a_nargs, SharesPrice a_shares_price, ...);
 extern double calculate_percentage_of(double a_value, double a_from_value);
 extern double convert_from_orig(double a_price, double a_exchange_rate);
 extern double convert_to_orig(double a_converted_price, double a_exchange_rate);
@@ -34,5 +34,3 @@ extern double calculate_profit_loss(double a_price_buy, int a_shares_buy, double
 extern double calculate_profit_loss_total(double a_price_buy, int a_shares_buy, double a_tax_buy, double a_commission_buy,
     double a_price_sell, int a_shares_sell, double a_tax_sell, double a_commission_sell);
 extern double calculate_cost_other(double a_profit_loss, double a_profit_loss_total, double a_cost_total);
-
-#endif  // calculator_finance_h__
