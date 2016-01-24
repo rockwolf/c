@@ -5,15 +5,19 @@
 #include <math.h>
 #include <stdarg.h>
 #include "types.h"
-#include "calculator_finance.h"
+#include "libcalculatorfinance.h"
+#define VERSION "v0.2"
 
 // Helper functions
 
-typedef struct
+/**********************************************************************
+ * version:
+ * Returns a string with the library version.
+ **********************************************************************/
+char *version()
 {
-    int sp_shares;
-    double sp_price;
-} SharesPrice;
+    return VERSION;
+}
 
 /**********************************************************************
  * calculate_average_price:
@@ -33,17 +37,17 @@ typedef struct
  * => P3 = (415 * 23.65 + 138 * 16.50) / 553
  * => P3 = 21.8657
  **********************************************************************/
-double calculate_average_price(int a_nargs, SharesPrice a_shares_price, ...)
+double calculate_average_price(int a_nargs, ...)
 {
     register int l_i;
     va_list l_ap;
     SharesPrice l_current;
     double l_denominator, l_numerator;
 
-    va_start(l_ap, a_shares_price);
+    va_start(l_ap, a_nargs);
     l_denominator = 0.0;
     l_numerator = 0.0;
-    for (l_i = 1; l_i <= a_nargs; l_i++)
+    for (l_i = 0; l_i < a_nargs; l_i++)
     {
          l_current = va_arg(l_ap, SharesPrice);
          l_denominator += l_current.sp_shares * l_current.sp_price;
@@ -327,7 +331,7 @@ double calculate_cost_other(double a_profit_loss, double a_profit_loss_total, do
 {
     double l_diff_cost_profit = 0.0;
     l_diff_cost_profit = a_profit_loss - a_profit_loss_total - a_cost_total;
-    if (l_diff_cost_profit > 0.0)
+    if (fabs(l_diff_cost_profit) > 0.0)
         return l_diff_cost_profit;
     else
       return 0.0;

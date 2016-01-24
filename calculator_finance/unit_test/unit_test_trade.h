@@ -1,5 +1,7 @@
 /* See LICENSE.txt for license and copyright information. */
 
+#pragma once
+
 // Helper functions
 char* test_calculate_percentage_of();
 char* test_convert_from_orig();

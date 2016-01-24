@@ -5,13 +5,13 @@
 #include "const.h"
 #include "types.h"
 #include "unit_test_trade.h"
-#include "calculator_finance.h"
+#include "../libcalculatorfinance.h"
 #include "general_functions.h"
 #include "minunit.h"
 
 // Helper functions
 
-char* test_calculate_average_price()
+char *test_calculate_average_price()
 {
     SharesPrice l_struct1, l_struct2;
     l_struct1.sp_shares = 415;
@@ -20,12 +20,12 @@ char* test_calculate_average_price()
     l_struct2.sp_price = 16.50;
     mu_assert(
         "[FAIL] Wrong result for calculate_average_price(2, l_struct1, l_struct2)!",
-        equals(calculate_average_price(2, l_struct1, l_struct2), 21.8657, C_PRECISION)
+        equals(calculate_average_price(2, l_struct1, l_struct2), 21.865732, C_PRECISION)
     ); 
     return 0;
 };
 
-char* test_calculate_percentage_of()
+char *test_calculate_percentage_of()
 {
     mu_assert(
         "[FAIL] Wrong result for calculate_percentage_of(2.0, 50.0)!",
@@ -34,7 +34,7 @@ char* test_calculate_percentage_of()
     return 0;
 }
 
-char* test_convert_from_orig()
+char *test_convert_from_orig()
 {
     mu_assert(
             "[FAIL] Wrong result for convert_from_orig(12.0, 0.5)!",
@@ -43,7 +43,7 @@ char* test_convert_from_orig()
     return 0;
 }
 
-char* test_convert_to_orig()
+char *test_convert_to_orig()
 {
     mu_assert(
         "[FAIL] Wrong result for convert_to_orig(12.0, 0.5)!",
@@ -54,7 +54,7 @@ char* test_convert_to_orig()
 
 // Before trade
 
-char* test_calculate_shares_recommended()
+char *test_calculate_shares_recommended()
 {
     mu_assert(
         "[FAIL] Wrong result for calculate_shares_recommended(10000.0, 1.0, 3.0, 12.0)!",
@@ -63,7 +63,7 @@ char* test_calculate_shares_recommended()
     return 0;
 }
 
-char* test_calculate_leveraged_contracts()
+char *test_calculate_leveraged_contracts()
 {
     mu_assert(
         "[FAIL] Wrong result for calculate_leveraged_contracts(4)!",
@@ -72,7 +72,7 @@ char* test_calculate_leveraged_contracts()
     return 0;
 }
 
-char* test_calculate_stoploss()
+char *test_calculate_stoploss()
 {
     mu_assert(
         "[FAIL] -short- Wrong result for calculate_stoploss(12.0, 2, 3.0, 1.0, 2.0, 10000.0, 0)!",
@@ -85,7 +85,7 @@ char* test_calculate_stoploss()
     return 0;
 }
 
-char* test_calculate_risk_input()
+char *test_calculate_risk_input()
 {
     mu_assert(
         "[FAIL] Wrong result for calculate_risk_input(10000.0, 2.0)!",
@@ -94,7 +94,7 @@ char* test_calculate_risk_input()
     return 0;
 }
 
-char* test_calculate_risk_initial()
+char *test_calculate_risk_initial()
 {
     mu_assert(
         "[FAIL] -short- Wrong result for calculate_risk_initial(12.0, 2, 3.0, 1.0, 2.0, 0)!",
@@ -107,7 +107,7 @@ char* test_calculate_risk_initial()
     return 0;
 }
 
-char* test_calculate_amount()
+char *test_calculate_amount()
 {
     mu_assert(
         "[FAIL] Wrong result for calculate_amount(12.0, 2)!",
@@ -116,7 +116,7 @@ char* test_calculate_amount()
     return 0;
 }
 
-char* test_calculate_amount_with_tax_and_commission()
+char *test_calculate_amount_with_tax_and_commission()
 {
     transaction_type_t a_transaction_type_t;
     a_transaction_type_t = BUY;
@@ -132,7 +132,7 @@ char* test_calculate_amount_with_tax_and_commission()
     return 0;
 }
 
-char* test_calculate_amount_with_tax()
+char *test_calculate_amount_with_tax()
 {
     transaction_type_t a_transaction_type_t;
     a_transaction_type_t = BUY;
@@ -148,7 +148,7 @@ char* test_calculate_amount_with_tax()
     return 0;
 }
 
-char* test_cost_transaction()
+char *test_cost_transaction()
 {
     mu_assert(
         "[FAIL] Wrong result for cost_transaction(12.0, 2, 3.0, 1.0)!",
@@ -157,7 +157,7 @@ char* test_cost_transaction()
     return 0;
 }
 
-char* test_cost_tax()
+char *test_cost_tax()
 {
     transaction_type_t a_transaction_type_t;
     a_transaction_type_t = BUY;
@@ -173,7 +173,7 @@ char* test_cost_tax()
     return 0;
 }
 
-char* test_calculate_price()
+char *test_calculate_price()
 {
     transaction_type_t a_transaction_type_t;
     a_transaction_type_t = BUY;
@@ -191,21 +191,20 @@ char* test_calculate_price()
 
 // After trade
 
-char* test_calculate_risk_actual()
+char *test_calculate_risk_actual()
 {
-    // TODO: use values from the ods to test these functions
     mu_assert(
-       "[FAIL] -minimum risk- Wrong result for calculate_risk_actual(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0, risk_initial, profit_loss)!",
-        equals(calculate_risk_actual(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0, risk_initial, profit_loss), 12.886598, C_PRECISION)
+       "[FAIL] -minimum risk- Wrong result for calculate_risk_actual(4138.00, 4, 0.0, 3.0, 4151.30, 4, 0.0, 3.0, 117.4136, 53.20)!",
+        equals(calculate_risk_actual(4138.00, 4, 0.0, 3.0, 4151.30, 4, 0.0, 3.0, 117.4136, 53.20), 117.4136, C_PRECISION)
     );
     mu_assert(
-       "[FAIL] -bigger risk- Wrong result for calculate_risk_actual(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0, risk_initial, profit_loss)!",
-        equals(calculate_risk_actual(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0, risk_initial, profit_loss), 12.886598, C_PRECISION)
+       "[FAIL] -bigger risk- Wrong result for calculate_risk_actual(4178.50, 4, 0.0, 3.0, 4144.50, 4, 0.0, 3.0, 119.4196, -136.0)!",
+        equals(calculate_risk_actual(4178.50, 4, 0.0, 3.0, 4144.50, 4, 0.0, 3.0, 119.4196, -136.0), 142.0000, C_PRECISION)
     );
     return 0;
 }
 
-char* test_calculate_r_multiple()
+char *test_calculate_r_multiple()
 {
     mu_assert(
         "[FAIL] Wrong result for calculate_r_multiple(-100.0, 200.0)!",
@@ -214,7 +213,7 @@ char* test_calculate_r_multiple()
     return 0;
 }
 
-char* test_calculate_cost_total()
+char *test_calculate_cost_total()
 {
     mu_assert(
         "[FAIL] Wrong result for calculate_cost_total(100.0, 3.0, 1.0, 50.0, 3.0, 1.0)!",
@@ -223,7 +222,7 @@ char* test_calculate_cost_total()
     return 0;
 }
 
-char* test_calculate_profit_loss()
+char *test_calculate_profit_loss()
 {
     mu_assert(
         "[FAIL] Wrong result for calculate_profit_loss(12.0, 2, 24.0, 2)!",
@@ -232,7 +231,7 @@ char* test_calculate_profit_loss()
     return 0;
 }
 
-char* test_calculate_profit_loss_total()
+char *test_calculate_profit_loss_total()
 {
     mu_assert(
         "[FAIL] Wrong result for calculate_profit_loss_total(12.0, 2, 3.0, 1.0, 24.0, 2, 3.0, 1.0)!",
@@ -241,28 +240,28 @@ char* test_calculate_profit_loss_total()
     return 0;
 }
 
-char* test_calculate_cost_other()
+char *test_calculate_cost_other()
 {
     mu_assert(
         "[FAIL] -positive, no other cost- Wrong result for calculate_cost_other(12.0, 8.92, 3.08)!",
-        equals(calculate_cost_other(12.0, 8.92, 3.08), 0.0, C_PRECISION)
+        calculate_cost_other(12.0, 8.92, 3.08) == 0.0
     ); 
     mu_assert(
         "[FAIL] -negative, no other cost- Wrong result for calculate_cost_other(12.0, 8.92, 3.08)!",
-        equals(calculate_cost_other(-12.0, -8.92, -3.08), 0.0, C_PRECISION)
+        calculate_cost_other(-12.0, -8.92, -3.08) == 0.0
     );
     mu_assert(
-        "[FAIL] -positive, 1.5 EUR other cost- Wrong result for calculate_cost_other(12.0, 8.92, 3.08)!",
-        equals(calculate_cost_other(12.0, 8.92, 4.58), 1.5, C_PRECISION)
+        "[FAIL] -positive, 1.5 EUR other cost- Wrong result for calculate_cost_other(12.0, 8.92, 1.58)!",
+        calculate_cost_other(12.0, 8.92, 1.58) == 1.5
     ); 
     mu_assert(
-        "[FAIL] -negative, 1.5 EUR other cost- Wrong result for calculate_cost_other(12.0, 8.92, 3.08)!",
-        equals(calculate_cost_other(-12.0, -8.92, -4.58), -1.5, C_PRECISION)
+        "[FAIL] -negative, 1.5 EUR other cost- Wrong result for calculate_cost_other(-12.0, -8.92, -1.58)!",
+        calculate_cost_other(-12.0, -8.92, -1.58) == -1.5
     );
     return 0;
 }
 
-char* test_all_trade()
+char *test_all_trade()
 {
     // Helper functions
     mu_run_test(test_calculate_average_price);

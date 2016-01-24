@@ -3,7 +3,13 @@
 
 // Helper functions
 
-extern double calculate_average_price(int a_nargs, SharesPrice a_shares_price, ...);
+typedef struct
+{
+    int sp_shares;
+    double sp_price;
+} SharesPrice;
+
+extern double calculate_average_price(int a_nargs, ...);
 extern double calculate_percentage_of(double a_value, double a_from_value);
 extern double convert_from_orig(double a_price, double a_exchange_rate);
 extern double convert_to_orig(double a_converted_price, double a_exchange_rate);

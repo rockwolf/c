@@ -2,7 +2,7 @@
 
 # Usage:
 # ------
-# make calculator_finance
+# make libcalculatorfinance
 # As root: make install
 # make clean
 # To remove:
@@ -10,24 +10,25 @@
 
 CC = cc
 CFLAGS = -g -O2 -W -Wall -Werror -Wextra
-DEPS = calculator_finance.h types.h
-OBJ = calculator_finance.o
-TARGET = calculator_finance
+DEPS = libcalculatorfinance.h types.h
+OBJ = libcalculatorfinance.o
+TARGET = libcalculatorfinance
 
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -shared -o $(TARGET).so $(.ALLSRC) -lm
+   #	-lcalculatorfinance
 
 $(OBJ): $(.PREFIX).c $(DEPS)
 	$(CC) $(CFLAGS) -c -fpic $(.PREFIX).c
 	
 install:
-	cp -v calculator_finance.so /usr/local/lib/
-	chmod 755 /usr/local/lib/calculator_finance.so
+	cp -v libcalculatorfinance.so /usr/local/lib/
+	chmod 755 /usr/local/lib/libcalculatorfinance.so
 	
 uninstall:
-	rm -v /usr/local/lib/calculator_finance.so
+	rm -v /usr/local/lib/libcalculatorfinance.so
 	
 .PHONY: clean
 
 clean:
-	rm -rfv calculator_finance.so *.o
+	rm -rfv libcalculatorfinance.so *.o
