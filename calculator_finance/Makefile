@@ -1,4 +1,5 @@
-# Makefile
+# libcalculatorfinance
+# See LICENSE file for copyright and license details.
 
 # Usage:
 # ------
@@ -8,12 +9,29 @@
 # To remove:
 # As root: make uninstall
 
-CC = cc
-CFLAGS = -g -O2 -W -Wall -Werror -Wextra
-DEPS = libcalculatorfinance.h types.h
-OBJ = libcalculatorfinance.o
+include config.mk
+
+SRC = ledgerplot.c functions.c income_vs_expenses.c
+OBJ = ${SRC:.c=.o}
+VPATH = .:modules
+DEPS = libcalculatorfinance.h types.
 TARGET = libcalculatorfinance
 
+all: options ${TARGET}
+
+options:
+	@echo libcalculatorfinance build options:
+	@echo "CFLAGS   = ${CFLAGS}"
+	@echo "LDFLAGS  = ${LDFLAGS}"
+	@echo "CC       = ${CC}"
+	
+.c.o:
+	@echo CC $<
+	@${CC} -c ${CFLAGS} $<
+	
+${OBJ}: config.h config.mk
+
+# TODO: finish porting the below to the makefile structure of the ledgerplot application.
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -shared -o $(TARGET).so $(.ALLSRC) -lm
    #	-lcalculatorfinance
