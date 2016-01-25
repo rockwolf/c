@@ -14,7 +14,7 @@ include config.mk
 SRC = libcalculatorfinance.c
 OBJ = ${SRC:.c=.o}
 VPATH = .:modules
-DEPS = libcalculatorfinance.h types.
+DEPS = libcalculatorfinance.h types.h
 TARGET = libcalculatorfinance
 
 all: options ${TARGET}
@@ -27,17 +27,17 @@ options:
 	
 .c.o:
 	@echo CC $<
-	@${CC} -c ${CFLAGS} $<
+	@${CC} -c -fpic ${CFLAGS} $<
 	
-${OBJ}: config.mk
+${OBJ}: ${DEPS} config.mk
 
 #TODO: replace the below
 #$(OBJ): $(.PREFIX).c $(DEPS)
 #	$(CC) $(CFLAGS) -c -fpic $(.PREFIX).c
 
 $(TARGET): ${OBJ}
-	@echo CC -o $@ ${OBJ} ${LDFLAGS}
-	@${CC} -o $@ ${OBJ} ${LDFLAGS}
+	@echo CC -o -shared $@ ${OBJ} ${LDFLAGS}
+	@${CC} -o -shared $@ ${OBJ} ${LDFLAGS}
 # TODO: finish porting the below to the makefile structure of the ledgerplot application.
 #$(TARGET): $(OBJ)
 #	$(CC) $(CFLAGS) -shared -o $(TARGET).so $(.ALLSRC) -lm
