@@ -55,7 +55,7 @@ double calculate_average_price(int a_nargs, ...)
     }
     va_end(l_ap);
     return (double)(l_denominator / l_numerator);
-};
+}
 
 /**********************************************************************
  * calculate_percentage_of:
@@ -64,7 +64,7 @@ double calculate_average_price(int a_nargs, ...)
 double calculate_percentage_of(double a_value, double a_from_value)
 {
     return (a_value / a_from_value * 100.0);
-};
+}
 
 /**********************************************************************
  * convert_from_orig:

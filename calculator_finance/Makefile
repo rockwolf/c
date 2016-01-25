@@ -29,15 +29,15 @@ options:
 	@echo CC $<
 	@${CC} -c -fpic ${CFLAGS} $<
 	
-${OBJ}: ${DEPS} config.mk
+#${OBJ}: config.mk ${DEPS} 
 
 #TODO: replace the below
-#$(OBJ): $(.PREFIX).c $(DEPS)
-#	$(CC) $(CFLAGS) -c -fpic $(.PREFIX).c
+$(OBJ): $(.PREFIX).c $(DEPS)
+	$(CC) $(CFLAGS) -c -fpic $(.PREFIX).c
 
 $(TARGET): ${OBJ}
-	@echo CC -o -shared $@ ${OBJ} ${LDFLAGS}
-	@${CC} -o -shared $@ ${OBJ} ${LDFLAGS}
+	@echo CC -o $@.so -shared ${OBJ} ${LDFLAGS}
+	@${CC} -o $@.so -shared ${OBJ} ${LDFLAGS}
 # TODO: finish porting the below to the makefile structure of the ledgerplot application.
 #$(TARGET): $(OBJ)
 #	$(CC) $(CFLAGS) -shared -o $(TARGET).so $(.ALLSRC) -lm
