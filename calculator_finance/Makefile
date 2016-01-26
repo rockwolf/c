@@ -60,7 +60,7 @@ install: all
 	@echo installing library to ${DESTDIR}${PREFIX}/lib
 	@mkdir -p ${DESTDIR}${PREFIX}/lib
 	@cp -f ${TARGET}.so ${DESTDIR}${PREFIX}/lib
-	@chmod 755 ${DESTDIR}${PREFIX}/lib/${TARGET}
+	@chmod 755 ${DESTDIR}${PREFIX}/lib/${TARGET}.so
 	@echo installing manual page to ${DESTDIR}${MANPREFIX}/man1
 	@mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	@sed "s/VERSION/${VERSION}/g" < libcalculatorfinance.1 > ${DESTDIR}${MANPREFIX}/man1/${TARGET}.1
