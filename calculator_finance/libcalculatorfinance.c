@@ -182,6 +182,7 @@ double calculate_amount(double a_price, int a_shares)
 }
 
 /**********************************************************************
+ * calculate_amount_with_tax_and_commission:
  * Calculates the amount, including tax and commission.
  * Note:
  * -----
