@@ -121,4 +121,35 @@ Calculates other costs based on the difference that remains.
 .SH BUGS
 None that I know of. All unit-tests succeeded, upon creation of the library.
 .SH EXAMPLES
-TBD
+.TP
+.B Python
+To use this in python, you can load the library as follows:
+
+from ctypes import cdll
+lcf = cdll.LoadLibrary('libcalculatorfinance.so')
+print(lcf.calculate_leveraged_contracts(5))
+
+For the function
+double calculate_average_price(int a_nargs, ...);
+you need a SharesPrice struct, which is defined in C as:
+
+typedef struct
+{
+    int sp_shares;
+    double sp_price;
+} SharesPrice;
+To use this struct from python, you would need to declare the following:
+
+from ctypes import cdll
+from ctypes import Structure, c_int, c_double
+
+lcf = cdll.LoadLibrary('libcalculatorfinance.so')
+
+class SharesPrice(Structure):
+     _fields_ = [
+        ("sp_shares", c_int),
+        ("sp_price", c_double)]
+
+l_sharesprice1 = SharesPrice(153, 12.18)
+l_sharesprice2 = SharesPrice(240, 23.65)
+print(lcf.calculate_average_price(2, byref(l_sharesprice1), byref(l_sharesprice2)))
