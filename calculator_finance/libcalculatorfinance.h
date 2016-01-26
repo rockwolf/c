@@ -9,6 +9,7 @@ typedef struct
     double sp_price;
 } SharesPrice;
 
+extern char *version();
 extern double calculate_average_price(int a_nargs, ...);
 extern double calculate_percentage_of(double a_value, double a_from_value);
 extern double convert_from_orig(double a_price, double a_exchange_rate);
