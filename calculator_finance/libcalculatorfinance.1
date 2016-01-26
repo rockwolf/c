@@ -35,27 +35,87 @@ Calculate what percentage a_value is from a_from_value.
 Returns a price, with an exchange rate applied to it.
 Used to convert a given currency to a new currency.
 .B double convert_to_orig(double a_converted_price, double a_exchange_rate);
+Returns a price in the original currency, with the exchange rate no longer applied to it.
 .B int calculate_shares_recommended(double a_pool, double a_commission, double a_tax, double a_price);
+Calculates the recommended amount of shares you can buy.
 .B int calculate_leveraged_contracts(int a_n);
+Calculates the number of contracts to buy, according to an algorithm that determines an ideal amount of leverage.
 .B double calculate_stoploss(double a_price, int a_shares, double a_tax, double a_commission, double a_risk, double a_pool, int a_is_long);
+Calculates the stoploss.
+Note:
+Long
+----
+amount selling at stoploss - amount at buying = initial risk of pool
+(S.Pb + S.Pb.T + C) - (S.Ps - S.Ps.T - C) = R/100 * pool
+Short
+-----
+amount selling - amount buying at stoploss = initial risk of pool
+(S.Psl + S.Psl.T + C) - (S.Ps - S.Ps.T - C) = R/100 * pool
 .B double calculate_risk_input(double a_pool, double a_risk);
+Calculates the risk based on total pool and input.
+Consider this the theoretical risk we want to take.
 .B double calculate_risk_initial(double a_price, int a_shares, double a_tax, double a_commission, double a_stoploss, int a_is_long);
+Calculates the initial risk.
+This is the risk we will take if our stoploss is reached.
+This should be equal to the risk_input if everything was
+correctly calculated.
+Note:
+Long
+----
+S.Pb + S.Pb.T + C - (S.Psl - S.Psl.T - C)
+Short
+-----
+S.Ps + S.Psl.T + C - (S.Ps - S.Ps.T - C)
 .B double calculate_amount(double a_price, int a_shares);
+Calculates the amount without tax and commission.
 .B double calculate_amount_with_tax_and_commission(double a_price, int a_shares, double a_tax, double a_commission, transaction_type_t a_transaction_type);
+Calculates the amount, including tax and commission.
+Note:
+-----
+AMT = SP + SPT + C (buy)
+AMT = SP - SPT - C (sell)
 .B double calculate_amount_with_tax(double a_price, int a_shares, double a_tax, transaction_type_t a_transaction_type);
+Calculates the amount (buy/sell) with tax included, but not the commission.
+Note:
+-----
+profit_loss = S.P + S.P.T (buy)
+profit_loss = S.P - S.P.T (sell)
 .B double cost_transaction(double a_price, int a_shares, double a_tax, double a_commission);
+Cost of transaction (tax and commission).
 .B double cost_tax(double a_amount, double a_commission, int a_shares, double a_price, transaction_type_t a_transaction_type);
+Cost of tax (buy and sell).
 .B double calculate_price(double a_amount, int a_shares, double a_tax, double a_commission, transaction_type_t a_transaction_type);
+Calculates the price when buying or selling.
 .B double calculate_risk_actual(double a_price_buy, int a_shares_buy, double a_tax_buy,
     double a_commission_buy, double a_price_sell, int a_shares_sell, double a_tax_sell,
     double a_commission_sell, double a_risk_initial, double a_profit_loss);
+Calculates the risk we actually took,
+based on the data in TABLE_TRADE.
+Note:
+risk_actual = S.Pb + S.Pb.T + Cb - (S.Ps - S.Ps.T - Cs)
+Note:
+-----
+It's the same for long and short.
 .B double calculate_r_multiple(double a_profit_loss, double a_risk_initial);
+Function to calculate R-multiple.
 .B double calculate_cost_total(double a_amount_buy, double a_tax_buy, double a_commission_buy,
     double a_amount_sell, double a_tax_sell, double a_commission_sell);
+Function to calculate the total cost associated with the given trade.
 .B double calculate_profit_loss(double a_price_buy, int a_shares_buy, double a_price_sell, int a_shares_sell);
+Calculates the profit_loss, without taking tax and commission into account.
+Note:
+-----
+profit_loss = S.Ps - S.Pb
+=> it's the same for long and short
 .B double calculate_profit_loss_total(double a_price_buy, int a_shares_buy, double a_tax_buy, double a_commission_buy,
     double a_price_sell, int a_shares_sell, double a_tax_sell, double a_commission_sell);
+Calculates the total profit_loss.
+Note:
+-----
+profit_loss = S.Ps - S.Ps.T - C - (S.Pb + S.Pb.T + C)
+=> it's the same for long and short
 .B double calculate_cost_other(double a_profit_loss, double a_profit_loss_total, double a_cost_total);
+Calculates other costs based on the difference that remains.
 .SH USAGE
 .SH SEE ALSO
 .SH BUGS
