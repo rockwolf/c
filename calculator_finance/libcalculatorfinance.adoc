@@ -33,7 +33,8 @@ double calculate_average_price(int a_nargs, ...);
 calculate_average_price: +
 Calculate the average price, based on previous transactions. +
 It requires a SharesPrice struct list, preceded by the total number
-of records. +
+of records.
+
 ....
 Note:
 S1 = 415, P1 = 23.65, S2 = 138, P2 = 16.50
@@ -91,14 +92,14 @@ amount selling - amount buying at stoploss = initial risk of pool
 ++++
 double calculate_risk_input(double a_pool, double a_risk);
 ++++
-Calculates the risk based on total pool and input. +
+Calculates the risk based on total pool and input.  +
 Consider this the theoretical risk we want to take.
 
 ++++
 double calculate_risk_initial(double a_price, int a_shares, double a_tax, double a_commission, double a_stoploss, int a_is_long);
 ++++
 Calculates the initial risk. +
-This is the risk we will take if our stoploss is reached. +
+This is the risk we will take if our stoploss is reached.  +
 This should be equal to the risk_input if everything was
 correctly calculated.
 
@@ -203,7 +204,7 @@ Calculates other costs based on the difference that remains.
 
 USAGE
 -----
-It's a library, designed to be used from application code. +
+It's a library, designed to be used from application code.  +
 See the EXAMPLES section on how to use it in python.
 
 SEE ALSO
@@ -217,7 +218,7 @@ None that I know of. All unit-tests succeeded, upon creation of the library.
 EXAMPLES
 --------
 Python +
-To use this in python, you can load the library as follows:
+To use this in python, you can load the library as shown in the following examples.
 
 [source,python,linenums]
 ++++
@@ -226,12 +227,8 @@ lcf = cdll.LoadLibrary('libcalculatorfinance.so')
 print(lcf.calculate_leveraged_contracts(5))
 ++++
 
-For the function
-++++
-double calculate_average_price(int a_nargs, ...);
-++++
-you need a SharesPrice struct, which is defined in C as:
-
+For the function **double calculate_average_price(int a_nargs, ...);**
+you need a SharesPrice struct, which is defined in C as: +
 [source,c]
 ++++
 typedef struct
@@ -241,8 +238,7 @@ typedef struct
 } SharesPrice;
 ++++
 
-To use this struct from python, you would need to declare the following:
-
+To use this struct from python, you would need to declare the following: +
 [source,python,linenums]
 ++++
 from ctypes import cdll
