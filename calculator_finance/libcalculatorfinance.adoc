@@ -119,34 +119,61 @@ S.Ps + S.Psl.T + C - (S.Ps - S.Ps.T - C)
 double calculate_amount(double a_price, int a_shares);
 ++++
 Calculates the amount without tax and commission.
-.B double calculate_amount_with_tax_and_commission(double a_price, int a_shares, double a_tax, double a_commission, transaction_type_t a_transaction_type);
+
+++++
+double calculate_amount_with_tax_and_commission(double a_price, int a_shares, double a_tax, double a_commission, transaction_type_t a_transaction_type);
+++++
 Calculates the amount, including tax and commission.
+
+....
 Note:
 -----
 AMT = SP + SPT + C (buy)
 AMT = SP - SPT - C (sell)
-.B double calculate_amount_with_tax(double a_price, int a_shares, double a_tax, transaction_type_t a_transaction_type);
+....
+
+++++
+double calculate_amount_with_tax(double a_price, int a_shares, double a_tax, transaction_type_t a_transaction_type);
+++++
 Calculates the amount (buy/sell) with tax included, but not the commission.
+
+....
 Note:
 -----
 profit_loss = S.P + S.P.T (buy)
 profit_loss = S.P - S.P.T (sell)
-.B double cost_transaction(double a_price, int a_shares, double a_tax, double a_commission);
+....
+
+++++
+double cost_transaction(double a_price, int a_shares, double a_tax, double a_commission);
+++++
 Cost of transaction (tax and commission).
-.B double cost_tax(double a_amount, double a_commission, int a_shares, double a_price, transaction_type_t a_transaction_type);
+
+++++
+double cost_tax(double a_amount, double a_commission, int a_shares, double a_price, transaction_type_t a_transaction_type);
+++++
 Cost of tax (buy and sell).
-.B double calculate_price(double a_amount, int a_shares, double a_tax, double a_commission, transaction_type_t a_transaction_type);
+
+++++
+double calculate_price(double a_amount, int a_shares, double a_tax, double a_commission, transaction_type_t a_transaction_type);
+++++
 Calculates the price when buying or selling.
-.B double calculate_risk_actual(double a_price_buy, int a_shares_buy, double a_tax_buy,
+
+++++
+double calculate_risk_actual(double a_price_buy, int a_shares_buy, double a_tax_buy,
     double a_commission_buy, double a_price_sell, int a_shares_sell, double a_tax_sell,
     double a_commission_sell, double a_risk_initial, double a_profit_loss);
-Calculates the risk we actually took,
-based on the data in TABLE_TRADE.
+++++
+Calculates the risk we actually took, based on the data in TABLE_TRADE.
+
+....
 Note:
+-----
 risk_actual = S.Pb + S.Pb.T + Cb - (S.Ps - S.Ps.T - Cs)
 Note:
 -----
 It's the same for long and short.
+....
 .B double calculate_r_multiple(double a_profit_loss, double a_risk_initial);
 Function to calculate R-multiple.
 .B double calculate_cost_total(double a_amount_buy, double a_tax_buy, double a_commission_buy,
