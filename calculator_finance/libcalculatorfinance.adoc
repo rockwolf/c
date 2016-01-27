@@ -21,6 +21,7 @@ It can be used for calculations regarding money management in trading, investing
 
 FUNCTIONS
 ---------
+
 ++++
 char *version()
 ++++
@@ -35,7 +36,6 @@ It requires a SharesPrice struct list, preceded by the total number
 of records. +
 ....
 Note:
------
 S1 = 415, P1 = 23.65, S2 = 138, P2 = 16.50
 When you need to buy new stocks and you need to log this for
 accounting purposes, you need to know what the average price was
@@ -80,12 +80,10 @@ double calculate_stoploss(double a_price, int a_shares, double a_tax, double a_c
 Calculates the stoploss.
 
 ....
-Long
-----
+Long:
 amount selling at stoploss - amount at buying = initial risk of pool
 (S.Pb + S.Pb.T + C) - (S.Ps - S.Ps.T - C) = R/100 * pool
-Short
------
+Short:
 amount selling - amount buying at stoploss = initial risk of pool
 (S.Psl + S.Psl.T + C) - (S.Ps - S.Ps.T - C) = R/100 * pool
 ....
@@ -105,11 +103,9 @@ This should be equal to the risk_input if everything was
 correctly calculated.
 
 ....
-Long
-----
+Long:
 S.Pb + S.Pb.T + C - (S.Psl - S.Psl.T - C)
-Short
------
+Short:
 S.Ps + S.Psl.T + C - (S.Ps - S.Ps.T - C)
 ....
 
@@ -125,7 +121,6 @@ Calculates the amount, including tax and commission.
 
 ....
 Note:
------
 AMT = SP + SPT + C (buy)
 AMT = SP - SPT - C (sell)
 ....
@@ -137,7 +132,6 @@ Calculates the amount (buy/sell) with tax included, but not the commission.
 
 ....
 Note:
------
 profit_loss = S.P + S.P.T (buy)
 profit_loss = S.P - S.P.T (sell)
 ....
@@ -166,7 +160,6 @@ Calculates the risk we actually took, based on the data in TABLE_TRADE.
 
 ....
 Note:
------
 risk_actual = S.Pb + S.Pb.T + Cb - (S.Ps - S.Ps.T - Cs)
 It's the same for long and short.
 ....
@@ -189,18 +182,19 @@ Calculates the profit_loss, without taking tax and commission into account.
 
 ....
 Note:
------
 profit_loss = S.Ps - S.Pb
-=> it's the same for long and short
+It's the same for long and short.
 ....
 
 double calculate_profit_loss_total(double a_price_buy, int a_shares_buy, double a_tax_buy, double a_commission_buy,
     double a_price_sell, int a_shares_sell, double a_tax_sell, double a_commission_sell);
 Calculates the total profit_loss.
+
+....
 Note:
------
 profit_loss = S.Ps - S.Ps.T - C - (S.Pb + S.Pb.T + C)
-=> it's the same for long and short
+It's the same for long and short.
+....
 
 ++++
 double calculate_cost_other(double a_profit_loss, double a_profit_loss_total, double a_cost_total);
@@ -225,6 +219,7 @@ EXAMPLES
 Python +
 To use this in python, you can load the library as follows:
 
+[source,python,linenums]
 ++++
 from ctypes import cdll
 lcf = cdll.LoadLibrary('libcalculatorfinance.so')
@@ -237,6 +232,7 @@ double calculate_average_price(int a_nargs, ...);
 ++++
 you need a SharesPrice struct, which is defined in C as:
 
+[source,c]
 ++++
 typedef struct
 {
@@ -247,6 +243,7 @@ typedef struct
 
 To use this struct from python, you would need to declare the following:
 
+[source,python,linenums]
 ++++
 from ctypes import cdll
 from ctypes import Structure, c_int, c_double
