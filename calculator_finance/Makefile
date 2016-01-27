@@ -55,11 +55,11 @@ install: all
 	@cp -f ${TARGET}.so ${DESTDIR}${PREFIX}/lib
 	@chmod 755 ${DESTDIR}${PREFIX}/lib/${TARGET}.so
 	@echo Generating man page, using asciidoc:
-	@echo asciidoc --doctype=manpage --out-file=${TARGET}.1 ${TARGET}.adoc
-	@asciidoc --doctype=manpage --out-file=${TARGET}.1 ${TARGET}.adoc
+	@echo a2x --doctype=manpage --format=manpage ${TARGET}.1.adoc
+	@a2x --doctype=manpage --format=manpage ${TARGET}.1.adoc
 	@echo installing manual page to ${DESTDIR}${MANPREFIX}/man1
 	@mkdir -p ${DESTDIR}${MANPREFIX}/man1
-	@sed "s/VERSION/${VERSION}/g" < libcalculatorfinance.1 > ${DESTDIR}${MANPREFIX}/man1/${TARGET}.1
+	@sed "s/VERSION/${VERSION}/g" < ${TARGET}.1 > ${DESTDIR}${MANPREFIX}/man1/${TARGET}.1
 	@chmod 644 ${DESTDIR}${MANPREFIX}/man1/${TARGET}.1
 	
 uninstall:

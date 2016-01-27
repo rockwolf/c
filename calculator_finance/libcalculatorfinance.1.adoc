@@ -1,26 +1,22 @@
-LIBCALCULATORFINANCE(1) libcalculatorfinance\-VERSION
-=====================================================
+= LIBCALCULATORFINANCE(1)
 :doctype: manpage
 
-NAME
-----
-libcalculatorfinance \- a shared library, written in C for doing financial calculations
+== NAME
+libcalculatorfinance - a shared library, written in C for doing financial calculations
 
-SYNOPSIS
---------
-*libcalculatorfinance.so*
+== SYNOPSIS
+Installed version: libcalculatorfinance-VERSION +
 
-DEPENDS ON
-----------
+Installed as: *libcalculatorfinance.so*
+
+== DEPENDS ON
 A c-compiler that supports the C99 standard or higher.
 
-DESCRIPTION
------------
+== DESCRIPTION
 libcalculatorfinance is a c library, that contains functions for making financial calculations.
 It can be used for calculations regarding money management in trading, investing or keeping financial records.
 
-FUNCTIONS
----------
+== FUNCTIONS
 
 *char *version();* +
 Returns a string with the library version.
@@ -74,14 +70,13 @@ amount selling - amount buying at stoploss = initial risk of pool
 ....
 
 *double calculate_risk_input(double a_pool, double a_risk);* +
-Calculates the risk based on total pool and input.  +
+Calculates the risk based on total pool and input. +
 Consider this the theoretical risk we want to take.
 
 *double calculate_risk_initial(double a_price, int a_shares, double a_tax, double a_commission, double a_stoploss, int a_is_long);* +
 Calculates the initial risk. +
 This is the risk we will take if our stoploss is reached. +
-This should be equal to the risk_input if everything was
-correctly calculated.
+This should be equal to the risk_input if everything was correctly calculated.
 
 ....
 Long:
@@ -156,25 +151,21 @@ It's the same for long and short.
 *double calculate_cost_other(double a_profit_loss, double a_profit_loss_total, double a_cost_total);* +
 Calculates other costs based on the difference that remains.
 
-USAGE
------
+== USAGE
 It's a library, designed to be used from application code. +
 See the EXAMPLES section on how to use it in python.
 
-SEE ALSO
---------
+== SEE ALSO
 This library stands on it's own and is not related to other man pages.
 
-BUGS
-----
+== BUGS
 None that I know of. All unit-tests succeeded, upon creation of the library.
 
-EXAMPLES
---------
+== EXAMPLES
 Python +
 To use this in python, you can load the library as shown in the following examples.
 
-[source,python,linenums]
+[source,python]
 ----
 from ctypes import cdll
 lcf = cdll.LoadLibrary('libcalculatorfinance.so')
@@ -193,7 +184,7 @@ typedef struct
 ----
 
 To use this struct from python, you would need to declare the following: +
-[source,python,linenums]
+[source,python]
 ----
 from ctypes import cdll
 from ctypes import Structure, c_int, c_double
