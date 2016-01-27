@@ -44,7 +44,7 @@ dist: clean
 	@echo creating dist tarball
 	@mkdir -p ${TARGET}-${VERSION}
 	@cp -R LICENSE.txt Makefile README.adoc config.mk \
-		libcalculatorfinance.1 libcalculatorfinance.h types.h ${SRC} unit_test/ ${TARGET}-${VERSION}
+		${TARGET}.1 libcalculatorfinance.h types.h ${SRC} unit_test/ ${TARGET}-${VERSION}
 	@tar -cf ${TARGET}-${VERSION}.tar ${TARGET}-${VERSION}
 	@gzip ${TARGET}-${VERSION}.tar
 	@rm -rf ${TARGET}-${VERSION}
