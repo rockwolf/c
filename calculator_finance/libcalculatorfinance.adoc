@@ -58,7 +58,7 @@ Returns a price in the original currency, with the exchange rate no longer appli
 *int calculate_shares_recommended(double a_pool, double a_commission, double a_tax, double a_price);* +
 Calculates the recommended amount of shares you can buy.
 
-*int calculate_leveraged_contracts(int a_n);*
+*int calculate_leveraged_contracts(int a_n);* +
 Calculates the number of contracts to buy, according to an algorithm that determines an ideal amount of leverage.
 
 *double calculate_stoploss(double a_price, int a_shares, double a_tax, double a_commission, double a_risk, double a_pool, int a_is_long);* +
@@ -79,7 +79,7 @@ Consider this the theoretical risk we want to take.
 
 *double calculate_risk_initial(double a_price, int a_shares, double a_tax, double a_commission, double a_stoploss, int a_is_long);* +
 Calculates the initial risk. +
-This is the risk we will take if our stoploss is reached.  +
+This is the risk we will take if our stoploss is reached. +
 This should be equal to the risk_input if everything was
 correctly calculated.
 
@@ -158,7 +158,7 @@ Calculates other costs based on the difference that remains.
 
 USAGE
 -----
-It's a library, designed to be used from application code.  +
+It's a library, designed to be used from application code. +
 See the EXAMPLES section on how to use it in python.
 
 SEE ALSO
