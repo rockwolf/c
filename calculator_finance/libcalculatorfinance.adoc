@@ -80,7 +80,6 @@ double calculate_stoploss(double a_price, int a_shares, double a_tax, double a_c
 Calculates the stoploss.
 
 ....
-Note:
 Long
 ----
 amount selling at stoploss - amount at buying = initial risk of pool
@@ -106,7 +105,6 @@ This should be equal to the risk_input if everything was
 correctly calculated.
 
 ....
-Note:
 Long
 ----
 S.Pb + S.Pb.T + C - (S.Psl - S.Psl.T - C)
@@ -170,54 +168,86 @@ Calculates the risk we actually took, based on the data in TABLE_TRADE.
 Note:
 -----
 risk_actual = S.Pb + S.Pb.T + Cb - (S.Ps - S.Ps.T - Cs)
-Note:
------
 It's the same for long and short.
 ....
-.B double calculate_r_multiple(double a_profit_loss, double a_risk_initial);
+
+++++
+double calculate_r_multiple(double a_profit_loss, double a_risk_initial);
+++++
 Function to calculate R-multiple.
-.B double calculate_cost_total(double a_amount_buy, double a_tax_buy, double a_commission_buy,
+
+++++
+double calculate_cost_total(double a_amount_buy, double a_tax_buy, double a_commission_buy,
     double a_amount_sell, double a_tax_sell, double a_commission_sell);
+++++
 Function to calculate the total cost associated with the given trade.
-.B double calculate_profit_loss(double a_price_buy, int a_shares_buy, double a_price_sell, int a_shares_sell);
+
+++++
+double calculate_profit_loss(double a_price_buy, int a_shares_buy, double a_price_sell, int a_shares_sell);
+++++
 Calculates the profit_loss, without taking tax and commission into account.
+
+....
 Note:
 -----
 profit_loss = S.Ps - S.Pb
 => it's the same for long and short
-.B double calculate_profit_loss_total(double a_price_buy, int a_shares_buy, double a_tax_buy, double a_commission_buy,
+....
+
+double calculate_profit_loss_total(double a_price_buy, int a_shares_buy, double a_tax_buy, double a_commission_buy,
     double a_price_sell, int a_shares_sell, double a_tax_sell, double a_commission_sell);
 Calculates the total profit_loss.
 Note:
 -----
 profit_loss = S.Ps - S.Ps.T - C - (S.Pb + S.Pb.T + C)
 => it's the same for long and short
-.B double calculate_cost_other(double a_profit_loss, double a_profit_loss_total, double a_cost_total);
+
+++++
+double calculate_cost_other(double a_profit_loss, double a_profit_loss_total, double a_cost_total);
+++++
 Calculates other costs based on the difference that remains.
-.SH USAGE
-.SH SEE ALSO
-.SH BUGS
+
+USAGE
+-----
+It's a library, designed to be used from application code. +
+See the EXAMPLES section on how to use it in python.
+
+SEE ALSO
+--------
+This library stands on it's own and is not related to other man pages.
+
+BUGS
+----
 None that I know of. All unit-tests succeeded, upon creation of the library.
-.SH EXAMPLES
-.TP
-.B Python
+
+EXAMPLES
+--------
+Python +
 To use this in python, you can load the library as follows:
 
+++++
 from ctypes import cdll
 lcf = cdll.LoadLibrary('libcalculatorfinance.so')
 print(lcf.calculate_leveraged_contracts(5))
+++++
 
 For the function
+++++
 double calculate_average_price(int a_nargs, ...);
+++++
 you need a SharesPrice struct, which is defined in C as:
 
+++++
 typedef struct
 {
     int sp_shares;
     double sp_price;
 } SharesPrice;
+++++
+
 To use this struct from python, you would need to declare the following:
 
+++++
 from ctypes import cdll
 from ctypes import Structure, c_int, c_double
 
@@ -231,3 +261,4 @@ class SharesPrice(Structure):
 l_sharesprice1 = SharesPrice(153, 12.18)
 l_sharesprice2 = SharesPrice(240, 23.65)
 print(lcf.calculate_average_price(2, byref(l_sharesprice1), byref(l_sharesprice2)))
+++++
