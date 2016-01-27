@@ -28,20 +28,13 @@ options:
 .c.o:
 	@echo CC $<
 	@${CC} -c -fpic ${CFLAGS} $<
-	
-#${OBJ}: config.mk ${DEPS} 
 
-#TODO: replace the below
 $(OBJ): $(.PREFIX).c $(DEPS)
 	$(CC) $(CFLAGS) -c -fpic $(.PREFIX).c
 
 $(TARGET): ${OBJ}
 	@echo CC -o $@.so -shared ${OBJ} ${LDFLAGS}
 	@${CC} -o $@.so -shared ${OBJ} ${LDFLAGS}
-# TODO: finish porting the below to the makefile structure of the ledgerplot application.
-#$(TARGET): $(OBJ)
-#	$(CC) $(CFLAGS) -shared -o $(TARGET).so $(.ALLSRC) -lm
-#   #	-lcalculatorfinance
    
 clean:
 	@echo cleaning...
@@ -61,6 +54,9 @@ install: all
 	@mkdir -p ${DESTDIR}${PREFIX}/lib
 	@cp -f ${TARGET}.so ${DESTDIR}${PREFIX}/lib
 	@chmod 755 ${DESTDIR}${PREFIX}/lib/${TARGET}.so
+	@echo Generating man page, using asciidoc:
+	@echo asciidoc --doctype=manpage --out-file=${TARGET}.1 ${TARGET}.adoc
+	@asciidoc --doctype=manpage --out-file=${TARGET}.1 ${TARGET}.adoc
 	@echo installing manual page to ${DESTDIR}${MANPREFIX}/man1
 	@mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	@sed "s/VERSION/${VERSION}/g" < libcalculatorfinance.1 > ${DESTDIR}${MANPREFIX}/man1/${TARGET}.1
