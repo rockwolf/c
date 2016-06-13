@@ -46,8 +46,8 @@ char *test_convert_from_orig()
 char *test_convert_to_orig()
 {
     mu_assert(
-        "[FAIL] Wrong result for convert_to_orig(12.0, 0.5)!",
-        convert_from_orig(12.0, 0.5) == 6.0
+        "[FAIL] Wrong result for convert_to_orig(6.0, 0.5)!",
+        convert_to_orig(6.0, 0.5) == 12.0
     ); 
     return 0;
 }
