@@ -1,3 +1,0 @@
-= calculator_finance
-
-Shared library for financial calculations w.r.t. trading and investing.
