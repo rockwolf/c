@@ -1,3 +1,0 @@
-= ledgerplot
-
-C application that calls ledger 3.0, prepares the requested data and plots the results using gnuplot.
