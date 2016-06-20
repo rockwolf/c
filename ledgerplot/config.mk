@@ -1,5 +1,5 @@
 # ledgerplot version
-VERSION = 0.2
+VERSION = 0.1
 
 # Customize below to fit your system
 
@@ -18,10 +18,13 @@ LIBS =
 
 # flags
 #CPPFLAGS = -D_BSD_SOURCE -D_POSIX_C_SOURCE=2 -DVERSION=\"${VERSION}\"
-CPPFLAGS = -D_BSD_SOURCE -D_POSIX_C_SOURCE=2 
-#CFLAGS   = -g -std=c99 -pedantic -Wall -O0 ${INCS} ${CPPFLAGS}
-CFLAGS   = -std=c11 -Wpedantic -Wall -Wno-deprecated-declarations -Os ${INCS} ${CPPFLAGS}
-LDFLAGS  = -s ${LIBS}
+CPPFLAGS = -D_BSD_SOURCE -D_POSIX_C_SOURCE=2
+# release
+#CFLAGS   = -std=c11 -Wpedantic -Wall -Wno-deprecated-declarations -Os ${INCS} ${CPPFLAGS}
+# debug
+CFLAGS = -g -c -Wall -Werror -std=c11 -O2 ${INCS}
+
+#LDFLAGS  = -s ${LIBS}
 
 # Solaris
 #CFLAGS = -fast ${INCS} -DVERSION=\"${VERSION}\"
